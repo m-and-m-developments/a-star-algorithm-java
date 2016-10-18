@@ -9,11 +9,16 @@ import java.util.List;
  */
 public abstract class GridProvider {
 
-    private List<List<Field>> grid;
+    protected List<List<Field>> mGrid;
 
     public GridProvider() {
+        generateGrid();
     }
 
-    public abstract List<List<Field>> getGrid();
+    public List<List<Field>> getGrid() {
+        return mGrid;
+    }
+
+    protected abstract void generateGrid();
 
 }
