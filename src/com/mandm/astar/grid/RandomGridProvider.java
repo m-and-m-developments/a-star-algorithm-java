@@ -1,7 +1,6 @@
 package com.mandm.astar.grid;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -15,24 +14,20 @@ public class RandomGridProvider extends GridProvider {
     private int mHeight;
 
     public RandomGridProvider(int width, int height) {
-        super();
         mWidth = width;
         mHeight = height;
+        generateGrid();
     }
 
     @Override
     protected void generateGrid() {
-        mGrid = new ArrayList<>(mWidth);
-
-        for (List<Field> row : mGrid) {
-            row = new ArrayList<>(mHeight);
-        }
-
+        mGrid = new ArrayList<>();
         Random random = new Random();
 
-        for (List<Field> row : mGrid) {
-            for (Field field : row) {
-                field = new Field(/*random.nextBoolean() ? 1 : 0*/);
+        for (int i = 0; i < mWidth; i++) {
+            mGrid.add(new ArrayList<>());
+            for (int j = 0; j < mHeight; j++) {
+                mGrid.get(i).add(new Field(/*random.nextBoolean() ? 1 : 0*/));
             }
         }
     }

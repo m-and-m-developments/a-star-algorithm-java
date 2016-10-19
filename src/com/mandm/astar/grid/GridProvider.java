@@ -12,7 +12,6 @@ public abstract class GridProvider {
     protected List<List<Field>> mGrid;
 
     public GridProvider() {
-        generateGrid();
     }
 
     public List<List<Field>> getGrid() {

@@ -7,6 +7,10 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 
+import static com.mandm.astar.render.Renderer.WINDOW_HEIGHT;
+import static com.mandm.astar.render.Renderer.WINDOW_WIDTH;
+import static org.lwjgl.opengl.GL11.*;
+
 /**
  * Created on 18.10.2016.
  *
@@ -70,6 +74,12 @@ public class GLHelper {
                     e.printStackTrace();
                 }
             }
+
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            glOrtho(0, WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, 1);
+            glMatrixMode(GL_MODELVIEW);
+
 
         } catch (LWJGLException e) {
             Log.e("Unable to setup mode " + width + 'x' + height

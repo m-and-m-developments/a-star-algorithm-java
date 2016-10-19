@@ -2,8 +2,13 @@ package com.mandm.astar.render;
 
 import com.mandm.astar.grid.Field;
 import com.mandm.astar.grid.GridProvider;
+import org.lwjgl.opengl.Display;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created on 18.10.2016.
@@ -13,30 +18,40 @@ import java.util.List;
 public class Renderer implements Runnable {
 
     private GridProvider mGridProvider;
-    private List<List<Field>> mGrid;
+    private List<List<FieldElement>> mGrid;
 
-    public static final int WINDOW_WIDTH = 20;
-    public static final int WINDOW_HEIGHT = 20;
+    public static final int WINDOW_WIDTH = 512;
+    public static final int WINDOW_HEIGHT = 512;
 
     public Renderer(GridProvider gridProvider) {
         mGridProvider = gridProvider;
-        mGrid = mGridProvider.getGrid();
+        List<List<Field>> grid = mGridProvider.getGrid();
 
-        FieldElement element = new FieldElement(null, 0, 0, 10, 10);
+        mGrid = new ArrayList<>();
 
+        for (int i = 0; i < grid.size(); i++) {
+            mGrid.add(new ArrayList<>());
+            for (int j = 0; j < grid.get(i).size(); j++) {
+                mGrid.get(i).add(new FieldElement(grid.get(i).get(j), i, j, grid.size(), grid.get(0).size()));
+            }
+        }
     }
 
     @Override
     public void run() {
 
-        while (true) {
+        GLHelper.initDisplay(Renderer.WINDOW_WIDTH, Renderer.WINDOW_HEIGHT, false);
 
-            for (List<Field> row : mGrid) {
-                for (Field field : row) {
+        while (!Display.isCloseRequested()) {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+            for (List<FieldElement> row : mGrid) {
+                for (FieldElement field : row) {
+                    field.render();
                 }
             }
 
+            Display.update();
         }
 
     }
@@ -62,33 +77,29 @@ public class Renderer implements Runnable {
         protected FieldElement(Field field, int line, int row, int lines, int rows) {
             mField = field;
 
-            //Calculating the height and width in pixels for each field
-            int pixelWidth = WINDOW_WIDTH / rows;
-            int pixelHeight = WINDOW_HEIGHT / lines;
+            mWidth = (float) WINDOW_WIDTH / rows;
+            mHeight = (float) WINDOW_HEIGHT / lines;
 
-            // calculating the width and height into floating point numbers from 0 < x < 2
-            mWidth = (float) pixelWidth / WINDOW_WIDTH;
-            mHeight = (float) pixelHeight / WINDOW_HEIGHT;
-
-            // calculating the position for the field into floating point numbers so they match the opengl raster
-
-            // y
-            // ---------------|1|-----------------
-            // |               |                 |
-            // |               |                 |
-            // |               |                 |
-            // |-1|----------------------------|1|  --> x
-            // |               |                 |
-            // |               |                 |
-            // |               |                 |
-            // --------------|-1|-----------------
-            mPosX = (mWidth * 2 * row) - 1;
-            mPosY = (mHeight * -2 * line) + 1;
+            mPosX = (mWidth * row);
+            mPosY = (mHeight * line);
         }
 
         // TODO: 18.10.2016 Change this so it calls the {@link Field#needsRender} function
         boolean needsRender() {
             return true;
+        }
+
+        public void render() {
+            if (needsRender()) {
+                Random random = new Random();
+                glColor3f(random.nextInt(2), random.nextInt(2), random.nextInt(2)/*0, 0, 1*/);
+                glBegin(GL_QUADS);
+                glVertex2f(mPosX, mPosY);
+                glVertex2f(mPosX, mPosY + mHeight);
+                glVertex2f(mPosX + mWidth, mPosY + mHeight);
+                glVertex2f(mPosX + mWidth, mPosY);
+                glEnd();
+            }
         }
 
     }
