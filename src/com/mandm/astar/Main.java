@@ -2,7 +2,8 @@ package com.mandm.astar;
 
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.grid.RandomGridProvider;
-import com.mandm.astar.render.Renderer;
+import com.mandm.astar.render.GridRenderer;
+import com.mandm.astar.ui.GuiScreen;
 
 /**
  * Created on 18.10.2016.
@@ -11,12 +12,21 @@ import com.mandm.astar.render.Renderer;
  */
 public class Main {
 
+    private static GuiScreen guiScreen;
+
     public static void main(String[] args) {
-        GridProvider gridProvider = new RandomGridProvider(512, 512);
+        GridProvider gridProvider = new RandomGridProvider(300, 300);
 
-        Renderer renderer = new Renderer(gridProvider);
 
-        new Thread(renderer).start();
+        Thread guiThread = new Thread(() -> {
+            guiScreen = new GuiScreen();
+            GridRenderer renderer = new GridRenderer(gridProvider, guiScreen.getWidth(), 600);
+            guiScreen.addView(renderer);
+            guiScreen.start();
+        });
+
+        guiThread.start();
+
     }
 
 }

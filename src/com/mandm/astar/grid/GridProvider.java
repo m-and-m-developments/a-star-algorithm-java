@@ -1,5 +1,7 @@
 package com.mandm.astar.grid;
 
+import com.mandm.astar.ui.widget.Field;
+
 import java.util.List;
 
 /**

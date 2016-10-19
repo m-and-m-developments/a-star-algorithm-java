@@ -1,5 +1,7 @@
 package com.mandm.astar.grid;
 
+import com.mandm.astar.ui.widget.Field;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -27,7 +29,7 @@ public class RandomGridProvider extends GridProvider {
         for (int i = 0; i < mWidth; i++) {
             mGrid.add(new ArrayList<>());
             for (int j = 0; j < mHeight; j++) {
-                mGrid.get(i).add(new Field(/*random.nextBoolean() ? 1 : 0*/));
+                mGrid.get(i).add(new Field(random.nextBoolean() ? 1 : 0));
             }
         }
     }

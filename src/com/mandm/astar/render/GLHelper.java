@@ -7,8 +7,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 
-import static com.mandm.astar.render.Renderer.WINDOW_HEIGHT;
-import static com.mandm.astar.render.Renderer.WINDOW_WIDTH;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -77,7 +75,7 @@ public class GLHelper {
 
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(0, WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, 1);
+            glOrtho(0, width, height, 0, 0, 1);
             glMatrixMode(GL_MODELVIEW);
 
 
