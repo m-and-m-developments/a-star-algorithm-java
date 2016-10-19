@@ -1,7 +1,9 @@
 package com.mandm.astar.ui;
 
 import com.mandm.astar.render.GLHelper;
+import com.mandm.astar.ui.widget.Button;
 import com.mandm.astar.ui.widget.View;
+import com.mandm.astar.util.Log;
 import org.lwjgl.opengl.Display;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import static org.lwjgl.opengl.GL11.*;
  *
  * @author Martin
  */
+@SuppressWarnings("WeakerAccess")
 public class GuiScreen {
 
     protected List<View> views;
@@ -26,6 +29,15 @@ public class GuiScreen {
         this.views = new ArrayList<>();
 
         GLHelper.initDisplay(WINDOW_WIDTH, WINDOW_HEIGHT, false);
+
+        Button button = new Button(20, 600, "Click Me!");
+
+        views.add(button);
+
+        button.addClickListener((View actionPerformer) -> {
+            Log.d("onClick!");
+        });
+
     }
 
     protected void render() {
@@ -49,8 +61,8 @@ public class GuiScreen {
     }
 
     /**
-     * After this method is called, the thread in which the function is called will
-     * be blocked
+     * After this method is called, the thread in which
+     * the function is called will be blocked
      */
     public void start() {
         update();

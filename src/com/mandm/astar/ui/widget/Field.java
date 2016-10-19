@@ -27,7 +27,7 @@ public class Field extends View {
 
     public Color getColor() {
         Random random = new Random();
-        return new Color(random.nextInt(2), random.nextInt(2), random.nextInt(2));
+        return new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
     }
 
     @Override
@@ -35,7 +35,7 @@ public class Field extends View {
         if (mNeedsRender) {
 //            mNeedsRender = false;
             Color color = getColor();
-            glColor3f(color.getRed(), color.getGreen(), color.getBlue());
+            glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 
             glBegin(GL_QUADS);
                 glVertex2f(mPosX, mPosY);
