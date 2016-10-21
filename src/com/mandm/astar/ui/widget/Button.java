@@ -17,11 +17,9 @@ public class Button extends View {
 
     public static final int BUTTON_DEFAULT_HEIGHT = 40;
     public static final int BUTTON_DEFAULT_WIDTH = 120;
-
+    protected boolean mHover;
     private String mText;
     private Font mFont;
-
-    protected boolean mHover;
 
     public Button(int posX, int posY, int width, int height, String text) {
         super(posX, posY, width, height);
@@ -61,17 +59,17 @@ public class Button extends View {
         Color color = getColor();
 
         glBegin(GL_QUADS);
-            glColor4f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
-            glVertex2f(mPosX, mPosY);
-            glVertex2f(mPosX, mPosY + mHeight);
-            glVertex2f(mPosX + mWidth, mPosY + mHeight);
-            glVertex2f(mPosX + mWidth, mPosY);
+        glColor4f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
+        glVertex2f(mPosX, mPosY);
+        glVertex2f(mPosX, mPosY + mHeight);
+        glVertex2f(mPosX + mWidth, mPosY + mHeight);
+        glVertex2f(mPosX + mWidth, mPosY);
         glEnd();
 
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            mFont.drawString(mPosX + mWidth / 2 - mFont.getWidth(mText) / 2, mPosY + mHeight / 2 - mFont.getHeight(mText) / 2, mText);
+        mFont.drawString(mPosX + mWidth / 2 - mFont.getWidth(mText) / 2, mPosY + mHeight / 2 - mFont.getHeight(mText) / 2, mText);
         glDisable(GL_BLEND);
     }
 
