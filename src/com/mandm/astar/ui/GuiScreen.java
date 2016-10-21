@@ -1,7 +1,13 @@
 package com.mandm.astar.ui;
 
 import com.mandm.astar.render.GLHelper;
+import com.mandm.astar.ui.anim.AccelerateDecelerateInterpolator;
+import com.mandm.astar.ui.anim.Animation;
+import com.mandm.astar.ui.anim.Animator;
+import com.mandm.astar.ui.anim.SlideAnimation;
+import com.mandm.astar.ui.widget.Button;
 import com.mandm.astar.ui.widget.View;
+import com.mandm.astar.util.Log;
 import org.lwjgl.opengl.Display;
 
 import java.util.ArrayList;
@@ -19,7 +25,7 @@ public class GuiScreen {
 
     protected List<View> views;
 
-    public static final int WINDOW_WIDTH = 600;
+    public static final int WINDOW_WIDTH = 1200;
     public static final int WINDOW_HEIGHT = 640;
 
 
@@ -28,10 +34,23 @@ public class GuiScreen {
 
         GLHelper.initDisplay(WINDOW_WIDTH, WINDOW_HEIGHT, false);
 
+        Button button = new Button(20, 600, "Click Me!");
+
+        views.add(button);
+
+        final int[] i = {1};
+        button.addClickListener((View actionPerformer) -> {
+            Log.d("onClick!");
+            Animation animation = new SlideAnimation(1000, button, new AccelerateDecelerateInterpolator(), 400 * i[0], 0);
+            Animator.animate(animation);
+            i[0] *= -1;
+        });
+
     }
 
     protected void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(.933333333f, .933333333f, .933333333f, 0);
 
         views.forEach(View::render);
 
@@ -44,6 +63,8 @@ public class GuiScreen {
 
             render();
         }
+
+        Display.destroy();
     }
 
     public void addView(View view) {

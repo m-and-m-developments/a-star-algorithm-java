@@ -1,6 +1,7 @@
 package com.mandm.astar.ui.widget;
 
-import com.mandm.astar.ui.FontManager;
+import com.mandm.astar.res.FontManager;
+import com.mandm.astar.res.TextureManager;
 import com.mandm.astar.ui.GuiScreen;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.Color;
@@ -58,20 +59,38 @@ public class Button extends View {
 
     @Override
     public void render() {
-        Color color = getColor();
-
-        glBegin(GL_QUADS);
-            glColor4f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
-            glVertex2f(mPosX, mPosY);
-            glVertex2f(mPosX, mPosY + mHeight);
-            glVertex2f(mPosX + mWidth, mPosY + mHeight);
-            glVertex2f(mPosX + mWidth, mPosY);
-        glEnd();
-
-
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            mFont.drawString(mPosX + mWidth / 2 - mFont.getWidth(mText) / 2, mPosY + mHeight / 2 - mFont.getHeight(mText) / 2, mText);
+        glColor4f(1, 1, 1, 1);
+
+        int x2 = mPosX + mWidth;
+        int y2 = mPosY + mHeight;
+
+        glEnable(GL_TEXTURE_2D);
+        if (mHover) {
+            TextureManager.buttonHover.bind();
+        } else if (isHeld) {
+            TextureManager.buttonClicked.bind();
+        } else {
+            TextureManager.button.bind();
+        }
+
+        glBegin(GL_QUADS);
+        {
+            glTexCoord2f(0, 0);
+            glVertex2f(mPosX, mPosY);
+            glTexCoord2f(0, 1);
+            glVertex2f(mPosX, y2);
+            glTexCoord2f(1, 1);
+            glVertex2f(x2, y2);
+            glTexCoord2f(1, 0);
+            glVertex2f(x2, mPosY);
+        }
+        glEnd();
+
+        mFont.drawString(mPosX + mWidth / 2 - mFont.getWidth(mText) / 2, mPosY + mHeight / 2 - mFont.getHeight(mText) / 2, mText, org.newdawn.slick.Color.black);
+
+        glDisable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);
     }
 
@@ -79,11 +98,11 @@ public class Button extends View {
         Color color = new Color();
 
         if (mHover) {
-            color.set(155, 155, 155, 0);
+            color.set(221, 221, 221, 0);
         } else if (isHeld) {
-            color.set(140, 140, 140, 0);
+            color.set(204, 204, 204, 0);
         } else {
-            color.set(120, 120, 120, 0);
+            color.set(238, 238, 238, 0);
         }
 
         return color;

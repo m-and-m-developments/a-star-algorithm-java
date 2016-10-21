@@ -1,4 +1,4 @@
-package com.mandm.astar.ui;
+package com.mandm.astar.res;
 
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.util.ResourceLoader;

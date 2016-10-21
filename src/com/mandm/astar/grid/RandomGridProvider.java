@@ -26,10 +26,10 @@ public class RandomGridProvider extends GridProvider {
         mGrid = new ArrayList<>();
         Random random = new Random();
 
-        for (int i = 0; i < mWidth; i++) {
+        for (int i = 0; i < mHeight; i++) {
             mGrid.add(new ArrayList<>());
-            for (int j = 0; j < mHeight; j++) {
-                mGrid.get(i).add(new Field(random.nextBoolean() ? 1 : 0));
+            for (int j = 0; j < mWidth; j++) {
+                mGrid.get(i).add(new Field(random.nextInt(3) % 2));
             }
         }
     }
