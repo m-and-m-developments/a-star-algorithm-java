@@ -24,7 +24,9 @@ public class AStarSolver {
 
     public void solve() {
         openList.add(GRID_PROVIDER.getStartField());
+        Field temp;
         while (true) {
+            temp = bestField;
             for (Field field : openList) {
                 if (bestField == null) {
                     bestField = field;
@@ -32,6 +34,10 @@ public class AStarSolver {
                     bestField = field;
                 }
             }
+
+            bestField.setPreviousField(temp);
+            openList.remove(bestField);
+
         }
     }
 }

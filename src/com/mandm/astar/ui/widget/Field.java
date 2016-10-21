@@ -14,6 +14,7 @@ public class Field extends View {
     private final double mDistance;
     protected boolean mNeedsRender;
     private Status mStatus;
+    private Field previousField;
 
     public Field(Status status, int xPosition, int yPosition, int xTarget, int yTarget) {
         super();
@@ -75,6 +76,14 @@ public class Field extends View {
     public void setStatus(Status status) {
         mStatus = status;
         mNeedsRender = true;
+    }
+
+    public Field getPreviousField() {
+        return previousField;
+    }
+
+    public void setPreviousField(Field previousField) {
+        this.previousField = previousField;
     }
 
     public enum Status {
