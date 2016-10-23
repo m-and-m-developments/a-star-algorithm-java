@@ -17,6 +17,7 @@ public abstract class View {
     protected int mWidth;
     protected int mHeight;
     protected boolean isHeld;
+
     protected List<ActionListener> listeners;
 
     public View() {
