@@ -10,16 +10,20 @@ import static org.lwjgl.opengl.GL11.*;
  * @author Martin
  */
 public class Field extends View {
-
-    private final double mDistance;
+    private double mHeuristicCost;
+    private double finalCost;
     protected boolean mNeedsRender;
     private Status mStatus;
-    private Field previousField;
+    private Field parent;
 
-    public Field(Status status, int xPosition, int yPosition, int xTarget, int yTarget) {
+    private final int X_POSITION;
+    private final int Y_POSITION;
+
+    public Field(Status status, int xPosition, int yPosition) {
         super();
         setStatus(status);
-        mDistance = Math.sqrt(Math.pow(Math.abs(xTarget - xPosition), 2) + Math.pow(Math.abs(yTarget - yPosition), 2));
+        X_POSITION = xPosition;
+        Y_POSITION = yPosition;
     }
 
     @Override
@@ -58,7 +62,7 @@ public class Field extends View {
     }
 
     public double getDistance() {
-        return mDistance;
+        return mHeuristicCost;
     }
 
     public boolean isNeedsRender() {
@@ -78,18 +82,44 @@ public class Field extends View {
         mNeedsRender = true;
     }
 
-    public Field getPreviousField() {
-        return previousField;
+    public Field getParent() {
+        return parent;
     }
 
-    public void setPreviousField(Field previousField) {
-        this.previousField = previousField;
+    public void setParent(Field parent) {
+        this.parent = parent;
+    }
+
+    public double getmHeuristicCost() {
+        return mHeuristicCost;
+    }
+
+    public double getFinalCost() {
+        return finalCost;
+    }
+
+    public void setFinalCost(double finalCost) {
+        this.finalCost = finalCost;
+    }
+
+    public void setmHeuristicCost(double mHeuristicCost) {
+        this.mHeuristicCost = mHeuristicCost;
+    }
+
+    public int getX_POSITION() {
+        return X_POSITION;
+    }
+
+    public int getY_POSITION() {
+        return Y_POSITION;
     }
 
     public enum Status {
         EMPTY,
         ACTIVE,
         WALL,
-        FOUND
+        FOUND,
+        START,
+        END
     }
 }
