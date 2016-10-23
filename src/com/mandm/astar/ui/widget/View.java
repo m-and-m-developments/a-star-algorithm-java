@@ -10,28 +10,27 @@ import java.util.List;
  */
 public abstract class View {
 
+    private static int nextID = 1;
+    protected final int mID;
     protected int mPosX;
     protected int mPosY;
     protected int mWidth;
     protected int mHeight;
-
     protected boolean isHeld;
-
     protected List<ActionListener> listeners;
 
-    private static int nextID = 1;
+    public View() {
+        listeners = new ArrayList<>();
 
-    protected final int mID;
+        mID = nextID++;
+    }
 
     public View(int posX, int posY, int width, int height) {
+        this();
         this.mPosX = posX;
         this.mPosY = posY;
         this.mWidth = width;
         this.mHeight = height;
-
-        listeners = new ArrayList<>();
-
-        mID = nextID++;
     }
 
     public void setPosition(int posX, int posY) {

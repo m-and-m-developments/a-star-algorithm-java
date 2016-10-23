@@ -2,8 +2,6 @@ package com.mandm.astar.ui.widget;
 
 import org.lwjgl.util.Color;
 
-import java.util.Random;
-
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -13,12 +11,15 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Field extends View {
 
+    private final double mDistance;
     protected boolean mNeedsRender;
-    private int mStatus;
+    private Status mStatus;
+    private Field previousField;
 
-    public Field(int status) {
-        super(0, 0, 0, 0);
+    public Field(Status status, int xPosition, int yPosition, int xTarget, int yTarget) {
+        super();
         setStatus(status);
+        mDistance = Math.sqrt(Math.pow(Math.abs(xTarget - xPosition), 2) + Math.pow(Math.abs(yTarget - yPosition), 2));
     }
 
     @Override
@@ -26,30 +27,69 @@ public class Field extends View {
     }
 
     public Color getColor() {
-        Random random = new Random();
-//        return new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
-        return new Color(mStatus * 255, 0, 0);
+        switch (mStatus) {
+            case EMPTY:
+                return new Color(Color.WHITE);
+            case ACTIVE:
+                return new Color(Color.BLUE);
+            case WALL:
+                return new Color(Color.BLACK);
+            case FOUND:
+                return new Color(Color.GREEN);
+            default:
+                throw new IllegalStateException("Unhandled state in method getColor()");
+        }
     }
 
     @Override
     public void render() {
         if (mNeedsRender) {
-//            mNeedsRender = false;
+            mNeedsRender = false;
             Color color = getColor();
             glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 
             glBegin(GL_QUADS);
-                glVertex2f(mPosX, mPosY);
-                glVertex2f(mPosX, mPosY + mHeight);
-                glVertex2f(mPosX + mWidth, mPosY + mHeight);
-                glVertex2f(mPosX + mWidth, mPosY);
+            glVertex2f(mPosX, mPosY);
+            glVertex2f(mPosX, mPosY + mHeight);
+            glVertex2f(mPosX + mWidth, mPosY + mHeight);
+            glVertex2f(mPosX + mWidth, mPosY);
             glEnd();
         }
     }
 
-    public void setStatus(int status) {
+    public double getDistance() {
+        return mDistance;
+    }
+
+    public boolean isNeedsRender() {
+        return mNeedsRender;
+    }
+
+    public void setNeedsRender(boolean mNeedsRender) {
+        this.mNeedsRender = mNeedsRender;
+    }
+
+    public Status getStatus() {
+        return mStatus;
+    }
+
+    public void setStatus(Status status) {
         mStatus = status;
         mNeedsRender = true;
     }
 
+    public Field getPreviousField() {
+        return previousField;
+    }
+
+    public void setPreviousField(Field previousField) {
+        this.previousField = previousField;
+    }
+
+    public enum Status {
+        EMPTY,
+        ACTIVE,
+        WALL,
+        FOUND
+    }
 }
