@@ -15,8 +15,8 @@ public class RandomGridProvider extends GridProvider {
     private int mWidth;
     private int mHeight;
 
-    public RandomGridProvider(int xStart, int yStart, int xTarget, int yTarget, int width, int height) {
-        super(xStart, yStart, xTarget, yTarget);
+    public RandomGridProvider(int width, int height) {
+        super();
         mWidth = width;
         mHeight = height;
         generateGrid();
@@ -30,8 +30,11 @@ public class RandomGridProvider extends GridProvider {
         for (int i = 0; i < mWidth; i++) {
             mGrid.add(new ArrayList<>());
             for (int j = 0; j < mHeight; j++) {
-                mGrid.get(i).add(new Field(random.nextBoolean() ? Field.Status.WALL : Field.Status.EMPTY, i, j, getXTarget(), getYTarget()));
+                mGrid.get(i).add(new Field(random.nextBoolean() ? Field.Status.WALL : Field.Status.EMPTY, i, j));
             }
         }
+
+        mGrid.get(random.nextInt(mGrid.size())).get(mGrid.get(0).size()).setStatus(Field.Status.START);
+        mGrid.get(random.nextInt(mGrid.size())).get(mGrid.get(0).size()).setStatus(Field.Status.END);
     }
 }

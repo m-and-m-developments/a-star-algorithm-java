@@ -15,7 +15,7 @@ public class Main {
     private static GuiScreen guiScreen;
 
     public static void main(String[] args) {
-        GridProvider gridProvider = new RandomGridProvider(0, 0, 15, 15, 0, 30);
+        GridProvider gridProvider = new RandomGridProvider(0, 30);
 
         Thread guiThread = new Thread(() -> {
             guiScreen = new GuiScreen();
