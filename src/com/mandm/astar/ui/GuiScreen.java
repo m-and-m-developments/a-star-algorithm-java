@@ -5,14 +5,9 @@ import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.grid.RandomGridProvider;
 import com.mandm.astar.render.GLHelper;
 import com.mandm.astar.render.GridRenderer;
-import com.mandm.astar.ui.anim.AccelerateDecelerateInterpolator;
-import com.mandm.astar.ui.anim.Animation;
-import com.mandm.astar.ui.anim.Animator;
-import com.mandm.astar.ui.anim.SlideAnimation;
 import com.mandm.astar.ui.widget.Button;
 import com.mandm.astar.ui.widget.View;
 import com.mandm.astar.ui.widget.ViewGroup;
-import com.mandm.astar.util.Log;
 import org.lwjgl.opengl.Display;
 
 import java.util.ArrayList;
@@ -28,15 +23,17 @@ import static org.lwjgl.opengl.GL11.*;
 @SuppressWarnings("WeakerAccess")
 public class GuiScreen {
 
+    protected List<View> views;
+
     public static final int WINDOW_WIDTH = 1200;
     public static final int WINDOW_HEIGHT = 640;
     private final ViewGroup solveGroup;
-    private final ViewGroup generateGroup;
+
     private final Button solve;
     private final Button generateGrid;
     private final Button loadGrid;
     private final Button exit;
-    protected List<View> views;
+
     private boolean closeRequested;
 
     private GridProvider gridProvider;
@@ -47,9 +44,8 @@ public class GuiScreen {
         GLHelper.initDisplay(WINDOW_WIDTH, WINDOW_HEIGHT, false);
 
         solveGroup = new ViewGroup(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        generateGroup = new ViewGroup(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        gridProvider = new RandomGridProvider(5, 10);
+        gridProvider = new RandomGridProvider(30, 60);
         GridRenderer renderer = new GridRenderer(gridProvider, getWidth(), 600);
         solveGroup.addView(renderer);
 
@@ -72,15 +68,6 @@ public class GuiScreen {
             solve.setEnabled(true);
         });
         loadGrid.addClickListener(view -> {
-            Animation animation1 = new SlideAnimation(500, solveGroup, new AccelerateDecelerateInterpolator(),-WINDOW_WIDTH, 0);
-            Animation animation2 = new SlideAnimation(500, generateGroup, new AccelerateDecelerateInterpolator(),-WINDOW_WIDTH, 0);
-
-            animation1.addAnimationListener(animation -> {
-                Log.d("OK!");
-            });
-
-            Animator.animate(animation1);
-            Animator.animate(animation2);
 
         });
         exit.addClickListener(view -> closeRequested = true);

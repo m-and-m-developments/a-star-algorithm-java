@@ -19,6 +19,7 @@ public class RandomGridProvider extends GridProvider {
         super();
         mWidth = width;
         mHeight = height;
+        mGrid = new ArrayList<>();
         generateGrid();
     }
 
@@ -29,6 +30,9 @@ public class RandomGridProvider extends GridProvider {
 
         for (int i = 0; i < mWidth; i++) {
             mGrid.add(new ArrayList<>());
+        }
+
+        for (int i = 0; i < mWidth; i++) {
             for (int j = 0; j < mHeight; j++) {
                 boolean wall = random.nextInt(3) == 0;
                 mGrid.get(i).add(new Field(wall ? Field.Status.WALL : Field.Status.EMPTY, i, j));

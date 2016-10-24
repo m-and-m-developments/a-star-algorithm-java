@@ -2,7 +2,8 @@ package com.mandm.astar.ui.widget;
 
 import org.lwjgl.util.Color;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glRecti;
 
 /**
  * Created on 18.10.2016.
@@ -55,12 +56,14 @@ public class Field extends View implements Comparable {
             Color color = getColor();
             glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 
-            glBegin(GL_QUADS);
-            glVertex2f(mPosX, mPosY);
-            glVertex2f(mPosX, mPosY + mHeight);
-            glVertex2f(mPosX + mWidth, mPosY + mHeight);
-            glVertex2f(mPosX + mWidth, mPosY);
-            glEnd();
+
+            glRecti(mPosX, mPosY, mPosX + mWidth, mPosY + mHeight);
+//            glBegin(GL_QUADS);
+//            glVertex2f(mPosX, mPosY);
+//            glVertex2f(mPosX, mPosY + mHeight);
+//            glVertex2f(mPosX + mWidth, mPosY + mHeight);
+//            glVertex2f(mPosX + mWidth, mPosY);
+//            glEnd();
         }
     }
 
@@ -81,7 +84,7 @@ public class Field extends View implements Comparable {
     }
 
     public void setStatus(Status status) {
-        if (mStatus != Status.START && mStatus != Status.END) {
+        if ((mStatus != Status.START && mStatus != Status.END) || status != Status.ACTIVE) {
             mStatus = status;
             mNeedsRender = true;
         }
