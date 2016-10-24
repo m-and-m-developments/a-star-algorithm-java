@@ -1,13 +1,12 @@
 package com.mandm.astar.ui;
 
+import com.mandm.astar.a_start_solver.AStarSolver;
+import com.mandm.astar.grid.GridProvider;
+import com.mandm.astar.grid.RandomGridProvider;
 import com.mandm.astar.render.GLHelper;
-import com.mandm.astar.ui.anim.AccelerateDecelerateInterpolator;
-import com.mandm.astar.ui.anim.Animation;
-import com.mandm.astar.ui.anim.Animator;
-import com.mandm.astar.ui.anim.SlideAnimation;
+import com.mandm.astar.render.GridRenderer;
 import com.mandm.astar.ui.widget.Button;
 import com.mandm.astar.ui.widget.View;
-import com.mandm.astar.util.Log;
 import org.lwjgl.opengl.Display;
 
 import java.util.ArrayList;
@@ -28,24 +27,46 @@ public class GuiScreen {
     public static final int WINDOW_WIDTH = 1200;
     public static final int WINDOW_HEIGHT = 640;
 
+    private final Button solve;
+    private final Button generateGrid;
+    private final Button loadGrid;
+    private final Button exit;
+
+    private boolean closeRequested;
+
+    private GridProvider gridProvider;
 
     public GuiScreen() {
         this.views = new ArrayList<>();
 
         GLHelper.initDisplay(WINDOW_WIDTH, WINDOW_HEIGHT, false);
 
-        Button button = new Button(20, 600, "Click Me!");
+        gridProvider = new RandomGridProvider(30, 60);
+        GridRenderer renderer = new GridRenderer(gridProvider, getWidth(), 600);
+        addView(renderer);
 
-        views.add(button);
+        solve = new Button(20, 600, "Solve!");
+        generateGrid = new Button((WINDOW_WIDTH - 20) / 4, 600, "Generate grid");
+        loadGrid = new Button((WINDOW_WIDTH - 20) / 2, 600, "Load grid");
+        exit = new Button((WINDOW_WIDTH - 20) / 4 * 3, 600, "Exit");
 
-        final int[] i = {1};
-        button.addClickListener((View actionPerformer) -> {
-            Log.d("onClick!");
-            Animation animation = new SlideAnimation(1000, button, new AccelerateDecelerateInterpolator(), 400 * i[0], 0);
-            Animator.animate(animation);
-            i[0] *= -1;
+        addView(solve);
+        addView(generateGrid);
+        addView(loadGrid);
+        addView(exit);
+
+        solve.addClickListener(view -> {
+            AStarSolver.solve(gridProvider);
+            solve.setEnabled(false);
         });
+        generateGrid.addClickListener(view -> {
+            gridProvider.generateGrid();
+            solve.setEnabled(true);
+        });
+        loadGrid.addClickListener(view -> {
 
+        });
+        exit.addClickListener(view -> closeRequested = true);
     }
 
     protected void render() {
@@ -58,7 +79,7 @@ public class GuiScreen {
     }
 
     protected void update() {
-        while (!Display.isCloseRequested()) {
+        while (!Display.isCloseRequested() && !closeRequested) {
             views.forEach(View::update);
 
             render();

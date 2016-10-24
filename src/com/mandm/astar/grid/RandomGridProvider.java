@@ -23,18 +23,19 @@ public class RandomGridProvider extends GridProvider {
     }
 
     @Override
-    protected void generateGrid() {
+    public void generateGrid() {
         mGrid = new ArrayList<>();
         Random random = new Random();
 
         for (int i = 0; i < mWidth; i++) {
             mGrid.add(new ArrayList<>());
             for (int j = 0; j < mHeight; j++) {
-                mGrid.get(i).add(new Field(random.nextBoolean() ? Field.Status.WALL : Field.Status.EMPTY, i, j));
+                boolean wall = random.nextInt(3) == 0;
+                mGrid.get(i).add(new Field(wall ? Field.Status.WALL : Field.Status.EMPTY, i, j));
             }
         }
 
-        mGrid.get(random.nextInt(mGrid.size())).get(mGrid.get(0).size()).setStatus(Field.Status.START);
-        mGrid.get(random.nextInt(mGrid.size())).get(mGrid.get(0).size()).setStatus(Field.Status.END);
+        mGrid.get(random.nextInt(mGrid.size())).get(random.nextInt(mGrid.get(0).size())).setStatus(Field.Status.START);
+        mGrid.get(random.nextInt(mGrid.size())).get(random.nextInt(mGrid.get(0).size())).setStatus(Field.Status.END);
     }
 }

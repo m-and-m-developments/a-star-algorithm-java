@@ -4,7 +4,6 @@ import com.mandm.astar.res.FontManager;
 import com.mandm.astar.res.TextureManager;
 import com.mandm.astar.ui.GuiScreen;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.util.Color;
 import org.newdawn.slick.Font;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -23,6 +22,7 @@ public class Button extends View {
     private Font mFont;
 
     protected boolean mHover;
+    protected boolean mEnabled = true;
 
     public Button(int posX, int posY, int width, int height, String text) {
         super(posX, posY, width, height);
@@ -36,7 +36,11 @@ public class Button extends View {
 
     @Override
     public void update() {
-//        System.out.println("Mouse: " + Mouse.getX() + "," + Mouse.getY());
+        if (!mEnabled) {
+            mHover = false;
+            isHeld = false;
+            return;
+        }
 
         if (Mouse.getX() >= mPosX && Mouse.getX() <= mPosX + getWidth()
                 && GuiScreen.WINDOW_HEIGHT - Mouse.getY() >= mPosY
@@ -88,23 +92,13 @@ public class Button extends View {
         }
         glEnd();
 
-        mFont.drawString(mPosX + mWidth / 2 - mFont.getWidth(mText) / 2, mPosY + mHeight / 2 - mFont.getHeight(mText) / 2, mText, org.newdawn.slick.Color.black);
+        mFont.drawString(mPosX + mWidth / 2 - mFont.getWidth(mText) / 2, mPosY + mHeight / 2 - mFont.getHeight(mText) / 2, mText, mEnabled ? org.newdawn.slick.Color.black : org.newdawn.slick.Color.gray);
 
         glDisable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);
     }
 
-    public Color getColor() {
-        Color color = new Color();
-
-        if (mHover) {
-            color.set(221, 221, 221, 0);
-        } else if (isHeld) {
-            color.set(204, 204, 204, 0);
-        } else {
-            color.set(238, 238, 238, 0);
-        }
-
-        return color;
+    public void setEnabled(boolean enabled) {
+        mEnabled = enabled;
     }
 }

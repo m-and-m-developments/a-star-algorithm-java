@@ -43,6 +43,14 @@ public class GridRenderer extends View {
 
     @Override
     public void update() {
+        List<List<Field>> grid = mGridProvider.getGrid();
+
+        for (int i = 0; i < mGrid.size(); i++) {
+            for (int j = 0; j < mGrid.get(i).size(); j++) {
+                mGrid.get(i).get(j).setStatus(grid.get(i).get(j).getStatus());
+            }
+        }
+
         mGrid.forEach(row -> row.forEach(Field::update));
     }
 

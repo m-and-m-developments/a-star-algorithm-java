@@ -18,7 +18,7 @@ public abstract class GridProvider {
         return mGrid;
     }
 
-    protected abstract void generateGrid();
+    public abstract void generateGrid();
 
     public Field getStartField() {
         return startField;

@@ -40,6 +40,10 @@ public class Field extends View {
                 return new Color(Color.BLACK);
             case FOUND:
                 return new Color(Color.GREEN);
+            case START:
+                return new Color(Color.CYAN);
+            case END:
+                return new Color(Color.RED);
             default:
                 throw new IllegalStateException("Unhandled state in method getColor()");
         }
@@ -48,7 +52,7 @@ public class Field extends View {
     @Override
     public void render() {
         if (mNeedsRender) {
-            mNeedsRender = false;
+//            mNeedsRender = false;
             Color color = getColor();
             glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 
