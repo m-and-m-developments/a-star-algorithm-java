@@ -35,7 +35,13 @@ public class RandomGridProvider extends GridProvider {
             }
         }
 
-        mGrid.get(random.nextInt(mGrid.size())).get(random.nextInt(mGrid.get(0).size())).setStatus(Field.Status.START);
-        mGrid.get(random.nextInt(mGrid.size())).get(random.nextInt(mGrid.get(0).size())).setStatus(Field.Status.END);
+        Field start = mGrid.get(random.nextInt(mGrid.size())).get(random.nextInt(mGrid.get(0).size()));
+        start.setStatus(Field.Status.START);
+        setStartField(start);
+
+        Field target = mGrid.get(random.nextInt(mGrid.size())).get(random.nextInt(mGrid.get(0).size()));
+        target.setStatus(Field.Status.END);
+        setTargetField(target);
+        System.out.println(getTargetField().getPosX() + " " + getTargetField().getY_POSITION());
     }
 }

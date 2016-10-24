@@ -19,24 +19,19 @@ public final class AStarSolver {
             @Override
             public void run() {
                 PriorityQueue<Field> openList = new PriorityQueue<>();
-
                 openList.add(GRID_PROVIDER.getStartField());
-
                 Field current;
 
                 while (true) {
                     current = openList.poll();
-
                     if (current == null) {
                         return;
                     }
-
-                    current.setStatus(Field.Status.ACTIVE);
-
+                    System.out.println(current.getStatus());
                     if (current.getStatus() == Field.Status.END) {
-                        return;
+                        break;
                     }
-
+                    current.setStatus(Field.Status.ACTIVE);
                     Field tmp;
 
                     if (current.getX_POSITION() - 1 >= 0) {
@@ -80,19 +75,20 @@ public final class AStarSolver {
                     }
                 }
             }
-        };
+        }.run();
 
     }
 
     private static void checkAndUpdateCost(PriorityQueue<Field> openList, Field current, Field tmp, double cost) {
-        if (tmp == null || tmp.getStatus() != Field.Status.EMPTY) return;
-        double t_final_cost = tmp.getmHeuristicCost() + cost;
+        if (tmp == null || tmp.getStatus() != Field.Status.EMPTY && tmp.getStatus() != Field.Status.END) return;
+        double finalCost = tmp.getmHeuristicCost() + cost;
 
         boolean inOpen = openList.contains(tmp);
-        if (!inOpen || t_final_cost < tmp.getFinalCost()) {
-            tmp.setFinalCost(t_final_cost);
+        if (!inOpen || finalCost < tmp.getFinalCost()) {
+            tmp.setFinalCost(finalCost);
             tmp.setParent(current);
             if (!inOpen) openList.add(tmp);
+            tmp.setStatus(Field.Status.ACTIVE);
         }
     }
 }

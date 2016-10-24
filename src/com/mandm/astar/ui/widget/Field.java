@@ -9,15 +9,14 @@ import static org.lwjgl.opengl.GL11.*;
  *
  * @author Martin
  */
-public class Field extends View {
-    private double mHeuristicCost;
-    private double finalCost;
-    protected boolean mNeedsRender;
-    private Status mStatus;
-    private Field parent;
-
+public class Field extends View implements Comparable {
     private final int X_POSITION;
     private final int Y_POSITION;
+    protected boolean mNeedsRender;
+    private double mHeuristicCost;
+    private double finalCost;
+    private Status mStatus;
+    private Field parent;
 
     public Field(Status status, int xPosition, int yPosition) {
         super();
@@ -82,8 +81,10 @@ public class Field extends View {
     }
 
     public void setStatus(Status status) {
-        mStatus = status;
-        mNeedsRender = true;
+        if (mStatus != Status.START && mStatus != Status.END) {
+            mStatus = status;
+            mNeedsRender = true;
+        }
     }
 
     public Field getParent() {
@@ -98,6 +99,10 @@ public class Field extends View {
         return mHeuristicCost;
     }
 
+    public void setmHeuristicCost(double mHeuristicCost) {
+        this.mHeuristicCost = mHeuristicCost;
+    }
+
     public double getFinalCost() {
         return finalCost;
     }
@@ -106,16 +111,17 @@ public class Field extends View {
         this.finalCost = finalCost;
     }
 
-    public void setmHeuristicCost(double mHeuristicCost) {
-        this.mHeuristicCost = mHeuristicCost;
-    }
-
     public int getX_POSITION() {
         return X_POSITION;
     }
 
     public int getY_POSITION() {
         return Y_POSITION;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return (int) Math.round(mHeuristicCost);
     }
 
     public enum Status {
