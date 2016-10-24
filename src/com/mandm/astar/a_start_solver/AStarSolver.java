@@ -17,7 +17,7 @@ public final class AStarSolver {
     public static void solve(final GridProvider GRID_PROVIDER) {
         System.out.println(V_H_COST + " " + DIAGONAL_COST);
 
-        new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 PriorityQueue<Field> openList = new PriorityQueue<>();
@@ -81,7 +81,7 @@ public final class AStarSolver {
                     current = current.getParent();
                 }
             }
-        }.run();
+        }).start();
 
     }
 

@@ -17,6 +17,7 @@ public abstract class Animation {
     double mPercentCompleted;
     protected Interpolator mInterpolator;
 
+    protected AnimationListener mListener;
 
     Animation(int duration, View animationView, Interpolator interpolator) {
         mDuration = duration;
@@ -33,7 +34,19 @@ public abstract class Animation {
             mPercentCompleted = (double) nanosSinceBegin / mDuration;
             animate(mPercentCompleted);
         }
+
+        if (mListener != null) {
+            mListener.animationFinished(this);
+        }
+    }
+
+    public void addAnimationListener(AnimationListener listener) {
+        mListener = listener;
     }
 
     protected abstract void animate(double percentCompleted);
+
+    public interface AnimationListener {
+        void animationFinished(Animation animation);
+    }
 }

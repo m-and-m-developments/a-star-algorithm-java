@@ -11,8 +11,8 @@ import java.util.List;
  */
 public abstract class GridProvider {
     protected List<List<Field>> mGrid;
-    private Field startField;
-    private Field targetField;
+    protected Field startField;
+    protected Field targetField;
 
     public List<List<Field>> getGrid() {
         return mGrid;

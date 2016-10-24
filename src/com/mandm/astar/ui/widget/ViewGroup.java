@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author Martin
  */
-public abstract class ViewGroup extends View {
+public class ViewGroup extends View {
 
     protected List<View> mViews;
 
