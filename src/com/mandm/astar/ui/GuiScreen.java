@@ -49,6 +49,7 @@ public class GuiScreen {
         GridRenderer renderer = new GridRenderer(gridProvider, getWidth(), 600);
         solveGroup.addView(renderer);
 
+
         solve = new Button(20, 600, "Solve!");
         generateGrid = new Button((WINDOW_WIDTH - 20) / 4, 600, "Generate grid");
         loadGrid = new Button((WINDOW_WIDTH - 20) / 2, 600, "Load grid");
