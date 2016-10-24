@@ -42,6 +42,5 @@ public class RandomGridProvider extends GridProvider {
         Field target = mGrid.get(random.nextInt(mGrid.size())).get(random.nextInt(mGrid.get(0).size()));
         target.setStatus(Field.Status.END);
         setTargetField(target);
-        System.out.println(getTargetField().getPosX() + " " + getTargetField().getY_POSITION());
     }
 }

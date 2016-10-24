@@ -15,6 +15,8 @@ public final class AStarSolver {
     private static final double DIAGONAL_COST = Math.sqrt(2) * V_H_COST;
 
     public static void solve(final GridProvider GRID_PROVIDER) {
+        System.out.println(V_H_COST + " " + DIAGONAL_COST);
+
         new Runnable() {
             @Override
             public void run() {
@@ -27,7 +29,6 @@ public final class AStarSolver {
                     if (current == null) {
                         return;
                     }
-                    System.out.println(current.getStatus());
                     if (current.getStatus() == Field.Status.END) {
                         break;
                     }
@@ -73,6 +74,11 @@ public final class AStarSolver {
                             checkAndUpdateCost(openList, current, tmp, current.getFinalCost() + DIAGONAL_COST);
                         }
                     }
+                }
+                current = current.getParent();
+                while (current.getStatus() != Field.Status.START) {
+                    current.setStatus(Field.Status.FOUND);
+                    current = current.getParent();
                 }
             }
         }.run();
