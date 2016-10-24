@@ -10,19 +10,9 @@ import java.util.List;
  * @author Martin
  */
 public abstract class GridProvider {
-
-    private final int X_START;
-    private final int Y_START;
-    private final int X_TARGET;
-    private final int Y_TARGET;
     protected List<List<Field>> mGrid;
-
-    public GridProvider(int xStart, int yStart, int xTarget, int yTarget) {
-        X_START = xStart;
-        Y_START = yStart;
-        X_TARGET = xStart;
-        Y_TARGET = yTarget;
-    }
+    private Field startField;
+    private Field targetField;
 
     public List<List<Field>> getGrid() {
         return mGrid;
@@ -31,22 +21,18 @@ public abstract class GridProvider {
     protected abstract void generateGrid();
 
     public Field getStartField() {
-        return getGrid().get(X_START).get(Y_START);
+        return startField;
     }
 
-    public int getXStart() {
-        return X_START;
+    public void setStartField(Field startField) {
+        this.startField = startField;
     }
 
-    public int getYStart() {
-        return Y_START;
+    public Field getTargetField() {
+        return targetField;
     }
 
-    public int getXTarget() {
-        return X_TARGET;
-    }
-
-    public int getYTarget() {
-        return Y_TARGET;
+    public void setTargetField(Field targetField) {
+        this.targetField = targetField;
     }
 }
