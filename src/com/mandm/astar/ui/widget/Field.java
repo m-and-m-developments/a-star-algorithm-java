@@ -95,11 +95,11 @@ public class Field extends View implements Comparable {
         this.parent = parent;
     }
 
-    public double getmHeuristicCost() {
+    public double getHeuristicCost() {
         return mHeuristicCost;
     }
 
-    public void setmHeuristicCost(double mHeuristicCost) {
+    public void setHeuristicCost(double mHeuristicCost) {
         this.mHeuristicCost = mHeuristicCost;
     }
 

@@ -11,11 +11,10 @@ import java.util.PriorityQueue;
  * Created on 10/21/2016
  */
 public final class AStarSolver {
-    private static final double V_H_COST = 10;
-    private static final double DIAGONAL_COST = Math.sqrt(2) * V_H_COST;
+    private static final double V_H_COST = 1;
+    private static final double DIAGONAL_COST = V_H_COST;
 
     public static void solve(final GridProvider GRID_PROVIDER) {
-        System.out.println(V_H_COST + " " + DIAGONAL_COST);
 
         new Thread(new Runnable() {
             @Override
@@ -87,7 +86,7 @@ public final class AStarSolver {
 
     private static void checkAndUpdateCost(PriorityQueue<Field> openList, Field current, Field tmp, double cost) {
         if (tmp == null || tmp.getStatus() != Field.Status.EMPTY && tmp.getStatus() != Field.Status.END) return;
-        double finalCost = tmp.getmHeuristicCost() + cost;
+        double finalCost = tmp.getHeuristicCost() + cost;
 
         boolean inOpen = openList.contains(tmp);
         if (!inOpen || finalCost < tmp.getFinalCost()) {
