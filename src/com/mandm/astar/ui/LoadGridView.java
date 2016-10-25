@@ -69,8 +69,6 @@ public class LoadGridView extends ViewGroup {
                     e.printStackTrace();
                 }
             }
-
-            Log.e("Not supported yet!");
         });
         exit.addClickListener(actionPerformer -> parent.closeChild(null));
 
