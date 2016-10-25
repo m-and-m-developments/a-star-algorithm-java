@@ -19,8 +19,6 @@ public class RandomGridProvider extends GridProvider {
         super();
         mWidth = width;
         mHeight = height;
-        mGrid = new ArrayList<>();
-        generateGrid();
     }
 
     @Override

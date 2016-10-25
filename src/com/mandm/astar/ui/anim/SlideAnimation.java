@@ -1,7 +1,5 @@
 package com.mandm.astar.ui.anim;
 
-import com.mandm.astar.ui.widget.View;
-
 /**
  * Created on 21.10.2016.
  *
@@ -9,22 +7,20 @@ import com.mandm.astar.ui.widget.View;
  */
 public class SlideAnimation extends Animation {
 
-    int mDeltaX;
-    int mDeltaY;
-    int mBeginX;
-    int mBeginY;
+    private int mDeltaX;
+    private int mDeltaY;
 
-    public SlideAnimation(int duration, View animationView, Interpolator interpolator, int deltaX, int deltaY) {
-        super(duration, animationView, interpolator);
+    public SlideAnimation(int duration, Interpolator interpolator, int deltaX, int deltaY) {
+        super(duration, interpolator);
         mDeltaX = deltaX;
         mDeltaY = deltaY;
-        mBeginX = mAnimationView.getPosX();
-        mBeginY = mAnimationView.getPosY();
     }
 
     @Override
-    protected void animate(double percentCompleted) {
-        mAnimationView.setPosX(mBeginX + (int) (mDeltaX * mInterpolator.getInperpolation(percentCompleted)));
-        mAnimationView.setPosY(mBeginY + (int) (mDeltaY * mInterpolator.getInperpolation(percentCompleted)));
+    protected void animate(double percentCompleted, double delta) {
+        mAnimationViews.forEach(view -> {
+            view.setPosX(view.getPosX() + (int) (mDeltaX * mInterpolator.getInperpolation(percentCompleted)));
+            view.setPosY(view.getPosY() + (int) (mDeltaY * mInterpolator.getInperpolation(percentCompleted)));
+        });
     }
 }

@@ -27,7 +27,6 @@ public class GuiScreen {
 
     public static final int WINDOW_WIDTH = 1200;
     public static final int WINDOW_HEIGHT = 640;
-    private final ViewGroup solveGroup;
 
     private final Button solve;
     private final Button generateGrid;
@@ -35,6 +34,9 @@ public class GuiScreen {
     private final Button exit;
 
     private boolean closeRequested;
+
+    private final ViewGroup solveGroup;
+    private ViewGroup child;
 
     private GridProvider gridProvider;
 
@@ -45,7 +47,7 @@ public class GuiScreen {
 
         solveGroup = new ViewGroup(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        gridProvider = new RandomGridProvider(30, 60);
+        gridProvider = new RandomGridProvider(300, 600);
         GridRenderer renderer = new GridRenderer(gridProvider, getWidth(), 600);
         solveGroup.addView(renderer);
 
@@ -69,7 +71,7 @@ public class GuiScreen {
             solve.setEnabled(true);
         });
         loadGrid.addClickListener(view -> {
-
+            child = new LoadGridView(WINDOW_WIDTH, WINDOW_HEIGHT, this);
         });
         exit.addClickListener(view -> closeRequested = true);
 
@@ -78,16 +80,24 @@ public class GuiScreen {
 
     protected void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearColor(.933333333f, .933333333f, .933333333f, 0);
+        glClearColor(.93333333f, .93333333f, .93333333f, 0);
 
-        views.forEach(View::render);
+        if (child == null) {
+            views.forEach(View::render);
+        } else {
+            child.render();
+        }
 
         Display.update();
     }
 
     protected void update() {
         while (!Display.isCloseRequested() && !closeRequested) {
-            views.forEach(View::update);
+            if (child == null) {
+                views.forEach(View::update);
+            } else {
+                child.update();
+            }
 
             render();
         }
@@ -109,5 +119,13 @@ public class GuiScreen {
 
     public int getWidth() {
         return WINDOW_WIDTH;
+    }
+
+    public void closeChild(GridProvider gridProvider) {
+        child = null;
+        if (gridProvider != null) {
+            this.gridProvider.copyFromProvider(gridProvider);
+            solve.setEnabled(true);
+        }
     }
 }

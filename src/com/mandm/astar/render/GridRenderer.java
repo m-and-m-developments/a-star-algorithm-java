@@ -21,7 +21,11 @@ public class GridRenderer extends View {
     public GridRenderer(GridProvider gridProvider, int width, int height) {
         super(0, 0, width, height);
         mGridProvider = gridProvider;
-        mGrid = gridProvider.getGrid();
+        setGrid();
+    }
+
+    protected void setGrid() {
+        mGrid = mGridProvider.getGrid();
 
         //line and row where we are
         //positions[0] = line
@@ -40,17 +44,18 @@ public class GridRenderer extends View {
             });
             positions[0]++;
         });
-
     }
 
     @Override
     public void update() {
         List<List<Field>> grid = mGridProvider.getGrid();
 
+        if (grid.size() != mGrid.size() || grid.get(0).size() != mGrid.get(0).size()) {
+            setGrid();
+        }
+
         for (int i = 0; i < mGrid.size(); i++) {
             for (int j = 0; j < mGrid.get(i).size(); j++) {
-                Field.Status status = grid.get(i).get(j).getStatus();
-
                 mGrid.get(i).get(j).setStatus(grid.get(i).get(j).getStatus());
             }
         }
@@ -62,16 +67,18 @@ public class GridRenderer extends View {
     public void render() {
         glBegin(GL_LINE);
         glColor3f(1, 0, 0);
+
+        glLineWidth(2);
         for (int i = 0; i < mGrid.size(); i++) {
             int x = i * (mWidth / mGrid.size());
-            glVertex2i(x, 0);
-            glVertex2i(x, mHeight);
+            glVertex2f(x, 0);
+            glVertex2f(x, mHeight);
         }
 
         for (int i = 0; i < mGrid.get(0).size(); i++) {
             int y = i * (mHeight / mGrid.get(0).size());
-            glVertex2i(0, y);
-            glVertex2i(mWidth, y);
+            glVertex2f(0, y);
+            glVertex2f(mWidth, y);
         }
         glEnd();
 

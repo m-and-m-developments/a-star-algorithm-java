@@ -2,6 +2,8 @@ package com.mandm.astar.ui.anim;
 
 import com.mandm.astar.ui.widget.View;
 
+import java.util.List;
+
 /**
  * Created on 20.10.2016.
  * A animation for a View
@@ -13,26 +15,28 @@ import com.mandm.astar.ui.widget.View;
 public abstract class Animation {
 
     protected int mDuration;
-    protected View mAnimationView;
+    protected List<View> mAnimationViews;
     double mPercentCompleted;
     protected Interpolator mInterpolator;
 
     protected AnimationListener mListener;
 
-    Animation(int duration, View animationView, Interpolator interpolator) {
+    Animation(int duration, Interpolator interpolator) {
         mDuration = duration;
-        mAnimationView = animationView;
         mInterpolator = interpolator;
     }
 
-    protected void animationLoop() {
+    protected void animationLoop(List<View> views) {
+        mAnimationViews = views;
         long nanosBegin = System.nanoTime();
         long nanosSinceBegin;
         mDuration *= 1000000;
+        double lastPercent = 0.;
 
         while ((nanosSinceBegin = System.nanoTime() - nanosBegin) < mDuration) {
             mPercentCompleted = (double) nanosSinceBegin / mDuration;
-            animate(mPercentCompleted);
+            animate(mPercentCompleted, mPercentCompleted - lastPercent);
+            lastPercent = mPercentCompleted;
         }
 
         if (mListener != null) {
@@ -44,7 +48,7 @@ public abstract class Animation {
         mListener = listener;
     }
 
-    protected abstract void animate(double percentCompleted);
+    protected abstract void animate(double percentCompleted, double delta);
 
     public interface AnimationListener {
         void animationFinished(Animation animation);

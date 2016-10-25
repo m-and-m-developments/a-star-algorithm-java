@@ -42,23 +42,21 @@ public class Button extends View {
             return;
         }
 
-        if (Mouse.getX() >= mPosX && Mouse.getX() <= mPosX + getWidth()
-                && GuiScreen.WINDOW_HEIGHT - Mouse.getY() >= mPosY
-                && GuiScreen.WINDOW_HEIGHT - Mouse.getY() <= mPosY + getHeight()
-                ) {
-            mHover = !Mouse.isButtonDown(0) && !Mouse.isButtonDown(1);
-            isHeld = !mHover;
+            if (Mouse.getX() >= mPosX && Mouse.getX() <= mPosX + getWidth()
+                    && GuiScreen.WINDOW_HEIGHT - Mouse.getY() >= mPosY
+                    && GuiScreen.WINDOW_HEIGHT - Mouse.getY() <= mPosY + getHeight()) {
+                mHover = !Mouse.isButtonDown(0) && !Mouse.isButtonDown(1);
+                isHeld = !mHover;
 
-            while (Mouse.next()) {
-                if (Mouse.getEventButtonState()) {
+                while (Mouse.next())
+                if (Mouse.getEventButtonState() && Mouse.getEventButton() >= 0) {
                     if (Mouse.getEventButton() == 0 || Mouse.getEventButton() == 1) {
                         onClick();
                     }
                 }
+            } else {
+                mHover = false;
             }
-        } else {
-            mHover = false;
-        }
     }
 
     @Override

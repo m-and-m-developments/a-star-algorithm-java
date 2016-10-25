@@ -1,5 +1,6 @@
 package com.mandm.astar.ui.widget;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.util.Color;
 
 import static org.lwjgl.opengl.GL11.glColor3f;
@@ -11,13 +12,13 @@ import static org.lwjgl.opengl.GL11.glRecti;
  * @author Martin
  */
 public class Field extends View implements Comparable {
-    private final int X_POSITION;
-    private final int Y_POSITION;
+    protected final int X_POSITION;
+    protected final int Y_POSITION;
     protected boolean mNeedsRender;
-    private double mHeuristicCost;
-    private double finalCost;
-    private Status mStatus;
-    private Field parent;
+    protected double mHeuristicCost;
+    protected double finalCost;
+    protected Status mStatus;
+    protected Field parent;
 
     public Field(Status status, int xPosition, int yPosition) {
         super();
@@ -55,15 +56,7 @@ public class Field extends View implements Comparable {
 //            mNeedsRender = false;
             Color color = getColor();
             glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
-
-
             glRecti(mPosX, mPosY, mPosX + mWidth, mPosY + mHeight);
-//            glBegin(GL_QUADS);
-//            glVertex2f(mPosX, mPosY);
-//            glVertex2f(mPosX, mPosY + mHeight);
-//            glVertex2f(mPosX + mWidth, mPosY + mHeight);
-//            glVertex2f(mPosX + mWidth, mPosY);
-//            glEnd();
         }
     }
 
@@ -123,16 +116,41 @@ public class Field extends View implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(@NotNull Object o) {
         return (int) Math.round(mHeuristicCost);
     }
 
     public enum Status {
-        EMPTY,
-        ACTIVE,
-        WALL,
-        FOUND,
-        START,
-        END
+        EMPTY(0),
+        ACTIVE(1),
+        WALL(2),
+        FOUND(3),
+        START(4),
+        END(5);
+
+        public int mNum;
+
+        Status(int num) {
+            this.mNum = num;
+        }
+
+        public static Status parseStatus(int num) {
+            switch (num) {
+                case 0:
+                    return EMPTY;
+                case 1:
+                    return ACTIVE;
+                case 2:
+                    return WALL;
+                case 3:
+                    return FOUND;
+                case 4:
+                    return START;
+                case 5:
+                    return END;
+                default:
+                    return null;
+            }
+        }
     }
 }

@@ -31,6 +31,10 @@ public class ViewGroup extends View {
                 .forEach(view -> mViews.remove(view));
     }
 
+    public List<View> getViews() {
+        return mViews;
+    }
+
     @Override
     public void update() {
         mViews.forEach(View::update);
