@@ -20,7 +20,6 @@ import java.io.IOException;
 public class LoadGridView extends ViewGroup {
 
     private final Button apply;
-    private final Button clear;
     private final Button load;
     private final Button save;
     private final Button exit;
@@ -33,8 +32,7 @@ public class LoadGridView extends ViewGroup {
         GridRenderer renderer = new GridRenderer(gridProvider, width, 600);
 
         apply = new Button(0, 600, "Apply");
-        clear = new Button(apply.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Clear grid");
-        load = new Button(clear.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Load grid");
+        load = new Button(apply.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Load grid");
         save = new Button(load.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Save");
         exit = new Button(save.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Exit");
 
@@ -45,7 +43,6 @@ public class LoadGridView extends ViewGroup {
                 Log.i("Please select a start and target field!");
             }
         });
-        clear.addClickListener(actionPerformer -> gridProvider.generateGrid());
         load.addClickListener(actionPerformer -> {
 
             try {
@@ -76,7 +73,6 @@ public class LoadGridView extends ViewGroup {
         // mouse buffer
         addView(renderer);
         addView(apply);
-        addView(clear);
         addView(load);
         addView(save);
         addView(exit);
