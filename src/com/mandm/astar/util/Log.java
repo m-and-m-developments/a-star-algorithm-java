@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created on 18.10.2016.
  *
- * @author Martin
+ * @author Alex Lardschneider
  */
 public class Log {
 
