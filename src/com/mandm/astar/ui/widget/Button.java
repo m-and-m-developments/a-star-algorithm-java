@@ -60,6 +60,7 @@ public class Button extends View {
                 }
             } else {
                 mHover = false;
+                mIsHeld = false;
             }
     }
 
