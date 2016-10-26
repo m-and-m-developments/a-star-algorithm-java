@@ -71,7 +71,7 @@ public class LoadGridView extends ViewGroup {
         });
         exit.addClickListener(actionPerformer -> parent.closeChild(null));
         setSize.addClickListener(actionPerformer -> {
-            String[] options = {"1", "2", "10", "20"};
+            String[] options = {"1", "2", "10", "20", "30","60"};
 
             String userInput = (String) JOptionPane.showInputDialog(null,
                     "Pixel size...",

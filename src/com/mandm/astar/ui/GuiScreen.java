@@ -3,7 +3,7 @@ package com.mandm.astar.ui;
 import com.mandm.astar.a_start_solver.AStarSolver;
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.grid.RandomGridProvider;
-import com.mandm.astar.render.GLHelper;
+import com.mandm.astar.render.Window;
 import com.mandm.astar.ui.widget.*;
 import org.lwjgl.opengl.Display;
 
@@ -40,12 +40,12 @@ public class GuiScreen {
     public GuiScreen() {
         this.views = new ArrayList<>();
 
-        GLHelper.initDisplay(WINDOW_WIDTH, WINDOW_HEIGHT, false);
+        Window.create(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         solveGroup = new ViewGroup(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        gridProvider = new RandomGridProvider(300, 600);
-        GridRenderer renderer = new GridRenderer(gridProvider, getWidth(), 600);
+        gridProvider = new RandomGridProvider(150, 300);
+        GridRenderer renderer = new GridRenderer(gridProvider, WINDOW_WIDTH, 600);
         solveGroup.addView(renderer);
 
 
@@ -117,10 +117,11 @@ public class GuiScreen {
         update();
     }
 
-    public int getWidth() {
-        return WINDOW_WIDTH;
-    }
-
+    /**
+     * Closes the childView
+     *
+     * @param gridProvider if this parameter is not null, the grid of the parameter gets tǵiven to this gridManager
+     */
     public void closeChild(GridProvider gridProvider) {
         child = null;
         if (gridProvider != null) {
