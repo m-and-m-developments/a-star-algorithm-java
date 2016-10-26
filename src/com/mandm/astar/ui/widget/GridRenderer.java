@@ -1,8 +1,6 @@
-package com.mandm.astar.render;
+package com.mandm.astar.ui.widget;
 
 import com.mandm.astar.grid.GridProvider;
-import com.mandm.astar.ui.widget.Field;
-import com.mandm.astar.ui.widget.View;
 
 import java.util.List;
 

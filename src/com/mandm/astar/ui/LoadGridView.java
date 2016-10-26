@@ -3,8 +3,8 @@ package com.mandm.astar.ui;
 import com.mandm.astar.grid.EmptyGridProvider;
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.grid.LoadGridProvider;
-import com.mandm.astar.render.GridRenderer;
 import com.mandm.astar.ui.widget.Button;
+import com.mandm.astar.ui.widget.GridRenderer;
 import com.mandm.astar.ui.widget.ViewGroup;
 import com.mandm.astar.util.Log;
 
@@ -23,6 +23,7 @@ public class LoadGridView extends ViewGroup {
     private final Button load;
     private final Button save;
     private final Button exit;
+    private final Button setSize;
 
     public LoadGridView(int width, int height, GuiScreen parent) {
         super(0, 0, width, height);
@@ -34,7 +35,8 @@ public class LoadGridView extends ViewGroup {
         apply = new Button(0, 600, "Apply");
         load = new Button(apply.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Load grid");
         save = new Button(load.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Save");
-        exit = new Button(save.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Exit");
+        setSize = new Button(save.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Set Size");
+        exit = new Button(setSize.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Exit");
 
         apply.addClickListener(actionPerformer -> {
             if (gridProvider.validateField()) {
@@ -68,6 +70,24 @@ public class LoadGridView extends ViewGroup {
             }
         });
         exit.addClickListener(actionPerformer -> parent.closeChild(null));
+        setSize.addClickListener(actionPerformer -> {
+            String[] options = {"1", "2", "10", "20"};
+
+            String userInput = (String) JOptionPane.showInputDialog(null,
+                    "Pixel size...",
+                    "Choose pixel size",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+
+            int input = Integer.parseInt(userInput);
+
+            GridProvider gridProvider1 = new EmptyGridProvider(renderer.getHeight() / input, renderer.getWidth() / input, true);
+
+            gridProvider.copyFromProvider(gridProvider1);
+        });
+
 
         // Needs to be first because it has the highest priority so the buttons do not clear the
         // mouse buffer
@@ -76,5 +96,6 @@ public class LoadGridView extends ViewGroup {
         addView(load);
         addView(save);
         addView(exit);
+        addView(setSize);
     }
 }

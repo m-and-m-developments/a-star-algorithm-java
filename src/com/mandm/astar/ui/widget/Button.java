@@ -25,20 +25,24 @@ public class Button extends View {
     protected boolean mEnabled = true;
 
     public Button(int posX, int posY, int width, int height, String text) {
-        super(posX, posY, width, height);
-        mText = text;
-        mFont = FontManager.getFontMedium();
+        this(posX, posY, width, height, text, FontManager.getFontMedium());
     }
 
     public Button(int posX, int posY, String text) {
         this(posX, posY, BUTTON_DEFAULT_WIDTH, BUTTON_DEFAULT_HEIGHT, text);
     }
 
+    public Button(int posX, int posY, int width, int height, String text, Font font) {
+        super(posX, posY, width, height);
+        mText = text;
+        mFont = font;
+    }
+
     @Override
     public void update() {
         if (!mEnabled) {
             mHover = false;
-            isHeld = false;
+            mIsHeld = false;
             return;
         }
 
@@ -46,7 +50,7 @@ public class Button extends View {
                     && GuiScreen.WINDOW_HEIGHT - Mouse.getY() >= mPosY
                     && GuiScreen.WINDOW_HEIGHT - Mouse.getY() <= mPosY + getHeight()) {
                 mHover = !Mouse.isButtonDown(0) && !Mouse.isButtonDown(1);
-                isHeld = !mHover;
+                mIsHeld = !mHover;
 
                 while (Mouse.next())
                 if (Mouse.getEventButtonState() && Mouse.getEventButton() >= 0) {
@@ -71,7 +75,7 @@ public class Button extends View {
         glEnable(GL_TEXTURE_2D);
         if (mHover) {
             TextureManager.buttonHover.bind();
-        } else if (isHeld) {
+        } else if (mIsHeld) {
             TextureManager.buttonClicked.bind();
         } else {
             TextureManager.button.bind();

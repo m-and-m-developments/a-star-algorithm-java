@@ -4,10 +4,7 @@ import com.mandm.astar.a_start_solver.AStarSolver;
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.grid.RandomGridProvider;
 import com.mandm.astar.render.GLHelper;
-import com.mandm.astar.render.GridRenderer;
-import com.mandm.astar.ui.widget.Button;
-import com.mandm.astar.ui.widget.View;
-import com.mandm.astar.ui.widget.ViewGroup;
+import com.mandm.astar.ui.widget.*;
 import org.lwjgl.opengl.Display;
 
 import java.util.ArrayList;
@@ -52,11 +49,14 @@ public class GuiScreen {
         solveGroup.addView(renderer);
 
 
-        solve = new Button(20, 600, "Solve!");
-        generateGrid = new Button((WINDOW_WIDTH - 20) / 4, 600, "Generate grid");
-        loadGrid = new Button((WINDOW_WIDTH - 20) / 2, 600, "Load grid");
-        exit = new Button((WINDOW_WIDTH - 20) / 4 * 3, 600, "Exit");
+        solve = new Button(0, 600, "Solve!");
+        generateGrid = new Button(solve.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Generate grid");
+        loadGrid = new Button(generateGrid.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Load grid");
+        exit = new Button(loadGrid.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Exit");
 
+        TextView textView = new TextView(exit.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 609, "This is a textview!");
+
+        solveGroup.addView(textView);
         solveGroup.addView(solve);
         solveGroup.addView(generateGrid);
         solveGroup.addView(loadGrid);
