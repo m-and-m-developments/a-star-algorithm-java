@@ -12,7 +12,7 @@ import static org.lwjgl.opengl.GL11.*;
 /**
  * Created on 18.10.2016.
  *
- * @author Martin
+ * @author Martin, Alex Lardschneider
  */
 public class GLHelper {
 
