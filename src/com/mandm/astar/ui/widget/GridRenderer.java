@@ -1,12 +1,8 @@
-package com.mandm.astar.render;
+package com.mandm.astar.ui.widget;
 
 import com.mandm.astar.grid.GridProvider;
-import com.mandm.astar.ui.widget.Field;
-import com.mandm.astar.ui.widget.View;
 
 import java.util.List;
-
-import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created on 18.10.2016.
@@ -65,23 +61,6 @@ public class GridRenderer extends View {
 
     @Override
     public void render() {
-        glBegin(GL_LINE);
-        glColor3f(1, 0, 0);
-
-        glLineWidth(2);
-        for (int i = 0; i < mGrid.size(); i++) {
-            int x = i * (mWidth / mGrid.size());
-            glVertex2f(x, 0);
-            glVertex2f(x, mHeight);
-        }
-
-        for (int i = 0; i < mGrid.get(0).size(); i++) {
-            int y = i * (mHeight / mGrid.get(0).size());
-            glVertex2f(0, y);
-            glVertex2f(mWidth, y);
-        }
-        glEnd();
-
         mGrid.forEach(row -> row.forEach(Field::render));
     }
 }

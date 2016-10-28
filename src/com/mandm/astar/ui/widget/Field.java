@@ -3,8 +3,7 @@ package com.mandm.astar.ui.widget;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.util.Color;
 
-import static org.lwjgl.opengl.GL11.glColor3f;
-import static org.lwjgl.opengl.GL11.glRecti;
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created on 18.10.2016.
@@ -55,9 +54,11 @@ public class Field extends View implements Comparable {
     public void render() {
         if (mNeedsRender) {
 //            mNeedsRender = false;
+            float margin = mWidth > 2 && mHeight > 2 ? .5f : 0;
             Color color = getColor();
             glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
-            glRecti(mPosX, mPosY, mPosX + mWidth, mPosY + mHeight);
+            glRectf(mPosX + margin, mPosY + margin, mPosX + mWidth - margin, mPosY + mHeight - margin);
+            glEnd();
         }
     }
 

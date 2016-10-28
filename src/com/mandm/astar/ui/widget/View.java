@@ -16,7 +16,7 @@ public abstract class View {
     protected int mPosY;
     protected int mWidth;
     protected int mHeight;
-    protected boolean isHeld;
+    protected boolean mIsHeld;
 
     protected List<ActionListener> listeners;
 

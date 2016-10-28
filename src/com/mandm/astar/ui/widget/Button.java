@@ -4,6 +4,7 @@ import com.mandm.astar.res.FontManager;
 import com.mandm.astar.res.TextureManager;
 import com.mandm.astar.ui.GuiScreen;
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -20,25 +21,36 @@ public class Button extends View {
 
     private String mText;
     private Font mFont;
+    protected Color mColor = Color.black;
 
     protected boolean mHover;
     protected boolean mEnabled = true;
 
     public Button(int posX, int posY, int width, int height, String text) {
-        super(posX, posY, width, height);
-        mText = text;
-        mFont = FontManager.getFontMedium();
+        this(posX, posY, width, height, text, FontManager.getFontMedium());
     }
 
     public Button(int posX, int posY, String text) {
         this(posX, posY, BUTTON_DEFAULT_WIDTH, BUTTON_DEFAULT_HEIGHT, text);
     }
 
+    public Button(int posX, int posY, int width, int height, String text, Font font) {
+        super(posX, posY, width, height);
+        mText = text;
+        mFont = font;
+    }
+
+    public Button(int posX, int posY, String text, Color color) {
+
+        this(posX, posY, BUTTON_DEFAULT_WIDTH, BUTTON_DEFAULT_HEIGHT, text, FontManager.getFontMedium());
+        mColor = color;
+    }
+
     @Override
     public void update() {
         if (!mEnabled) {
             mHover = false;
-            isHeld = false;
+            mIsHeld = false;
             return;
         }
 
@@ -46,7 +58,7 @@ public class Button extends View {
                     && GuiScreen.WINDOW_HEIGHT - Mouse.getY() >= mPosY
                     && GuiScreen.WINDOW_HEIGHT - Mouse.getY() <= mPosY + getHeight()) {
                 mHover = !Mouse.isButtonDown(0) && !Mouse.isButtonDown(1);
-                isHeld = !mHover;
+                mIsHeld = !mHover;
 
                 while (Mouse.next())
                 if (Mouse.getEventButtonState() && Mouse.getEventButton() >= 0) {
@@ -56,6 +68,7 @@ public class Button extends View {
                 }
             } else {
                 mHover = false;
+                mIsHeld = false;
             }
     }
 
@@ -71,7 +84,7 @@ public class Button extends View {
         glEnable(GL_TEXTURE_2D);
         if (mHover) {
             TextureManager.buttonHover.bind();
-        } else if (isHeld) {
+        } else if (mIsHeld) {
             TextureManager.buttonClicked.bind();
         } else {
             TextureManager.button.bind();
@@ -90,7 +103,7 @@ public class Button extends View {
         }
         glEnd();
 
-        mFont.drawString(mPosX + mWidth / 2 - mFont.getWidth(mText) / 2, mPosY + mHeight / 2 - mFont.getHeight(mText) / 2, mText, mEnabled ? org.newdawn.slick.Color.black : org.newdawn.slick.Color.gray);
+        mFont.drawString(mPosX + mWidth / 2 - mFont.getWidth(mText) / 2, mPosY + mHeight / 2 - mFont.getHeight(mText) / 2, mText, mEnabled ? mColor : org.newdawn.slick.Color.gray);
 
         glDisable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);

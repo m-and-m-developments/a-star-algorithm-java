@@ -3,12 +3,13 @@ package com.mandm.astar.ui;
 import com.mandm.astar.a_start_solver.AStarSolver;
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.grid.RandomGridProvider;
-import com.mandm.astar.render.GLHelper;
-import com.mandm.astar.render.GridRenderer;
+import com.mandm.astar.render.Window;
 import com.mandm.astar.ui.widget.Button;
+import com.mandm.astar.ui.widget.GridRenderer;
 import com.mandm.astar.ui.widget.View;
 import com.mandm.astar.ui.widget.ViewGroup;
 import org.lwjgl.opengl.Display;
+import org.newdawn.slick.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,19 +40,19 @@ public class GuiScreen {
     public GuiScreen() {
         this.views = new ArrayList<>();
 
-        GLHelper.initDisplay(WINDOW_WIDTH, WINDOW_HEIGHT, false);
+        Window.create(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         solveGroup = new ViewGroup(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        gridProvider = new RandomGridProvider(256, 512);
-        GridRenderer renderer = new GridRenderer(gridProvider, getWidth(), 600);
+        gridProvider = new RandomGridProvider(150, 300);
+        GridRenderer renderer = new GridRenderer(gridProvider, WINDOW_WIDTH, 600);
         solveGroup.addView(renderer);
 
 
-        solve = new Button(20, 600, "Solve!");
-        generateGrid = new Button((WINDOW_WIDTH - 20) / 4, 600, "Generate grid");
-        loadGrid = new Button((WINDOW_WIDTH - 20) / 2, 600, "Load grid");
-        exit = new Button((WINDOW_WIDTH - 20) / 4 * 3, 600, "Exit");
+        solve = new Button(0, 600, "Solve!");
+        generateGrid = new Button(solve.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Generate grid");
+        loadGrid = new Button(generateGrid.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Load grid");
+        exit = new Button(loadGrid.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Exit", Color.red);
 
         solveGroup.addView(solve);
         solveGroup.addView(generateGrid);
@@ -113,10 +114,11 @@ public class GuiScreen {
         update();
     }
 
-    public int getWidth() {
-        return WINDOW_WIDTH;
-    }
-
+    /**
+     * Closes the childView
+     *
+     * @param gridProvider if this parameter is not null, the grid of the parameter gets tǵiven to this gridManager
+     */
     public void closeChild(GridProvider gridProvider) {
         child = null;
         if (gridProvider != null) {

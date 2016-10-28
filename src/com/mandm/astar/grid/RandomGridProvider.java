@@ -45,4 +45,18 @@ public class RandomGridProvider extends GridProvider {
         target.setStatus(Field.Status.END);
         setTargetField(target);
     }
+
+    @Override
+    public void copyFromProvider(GridProvider gridProvider) {
+        super.copyFromProvider(gridProvider);
+        if (gridProvider instanceof RandomGridProvider) {
+            RandomGridProvider randomGridProvider = (RandomGridProvider) gridProvider;
+            mWidth = randomGridProvider.mWidth;
+            mHeight = randomGridProvider.mHeight;
+        } else if (gridProvider instanceof EmptyGridProvider) {
+            EmptyGridProvider emptyGridProvider = (EmptyGridProvider) gridProvider;
+            mWidth = emptyGridProvider.mWidth;
+            mHeight = emptyGridProvider.mHeight;
+        }
+    }
 }

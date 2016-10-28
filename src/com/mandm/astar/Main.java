@@ -16,10 +16,10 @@ public class Main {
         Thread guiThread = new Thread(() -> {
             guiScreen = new GuiScreen();
             guiScreen.start();
+
         });
 
         guiThread.start();
-
     }
 
 }
