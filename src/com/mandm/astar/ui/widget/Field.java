@@ -15,12 +15,13 @@ public class Field extends View implements Comparable {
     protected final int X_POSITION;
     protected final int Y_POSITION;
     protected boolean mNeedsRender;
+
     protected double mHeuristicCost;
     protected double finalCost;
     protected Status mStatus;
     protected Field parent;
 
-    public Field(Status status, int xPosition, int yPosition) {
+    public Field(Status status, int yPosition, int xPosition) {
         super();
         setStatus(status);
         X_POSITION = xPosition;
@@ -117,7 +118,7 @@ public class Field extends View implements Comparable {
 
     @Override
     public int compareTo(@NotNull Object o) {
-        return (int) Math.round(mHeuristicCost);
+        return (int) Math.round(getHeuristicCost() - ((Field) o).getHeuristicCost());
     }
 
     public enum Status {

@@ -23,19 +23,15 @@ import static org.lwjgl.opengl.GL11.*;
 @SuppressWarnings("WeakerAccess")
 public class GuiScreen {
 
-    protected List<View> views;
-
     public static final int WINDOW_WIDTH = 1200;
     public static final int WINDOW_HEIGHT = 640;
-
     private final Button solve;
     private final Button generateGrid;
     private final Button loadGrid;
     private final Button exit;
-
-    private boolean closeRequested;
-
     private final ViewGroup solveGroup;
+    protected List<View> views;
+    private boolean closeRequested;
     private ViewGroup child;
 
     private GridProvider gridProvider;
@@ -47,7 +43,7 @@ public class GuiScreen {
 
         solveGroup = new ViewGroup(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        gridProvider = new RandomGridProvider(300, 600);
+        gridProvider = new RandomGridProvider(256, 512);
         GridRenderer renderer = new GridRenderer(gridProvider, getWidth(), 600);
         solveGroup.addView(renderer);
 
