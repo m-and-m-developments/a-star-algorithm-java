@@ -4,6 +4,7 @@ import com.mandm.astar.res.FontManager;
 import com.mandm.astar.res.TextureManager;
 import com.mandm.astar.ui.GuiScreen;
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -20,6 +21,7 @@ public class Button extends View {
 
     private String mText;
     private Font mFont;
+    protected Color mColor = Color.black;
 
     protected boolean mHover;
     protected boolean mEnabled = true;
@@ -36,6 +38,12 @@ public class Button extends View {
         super(posX, posY, width, height);
         mText = text;
         mFont = font;
+    }
+
+    public Button(int posX, int posY, String text, Color color) {
+
+        this(posX, posY, BUTTON_DEFAULT_WIDTH, BUTTON_DEFAULT_HEIGHT, text, FontManager.getFontMedium());
+        mColor = color;
     }
 
     @Override
@@ -95,7 +103,7 @@ public class Button extends View {
         }
         glEnd();
 
-        mFont.drawString(mPosX + mWidth / 2 - mFont.getWidth(mText) / 2, mPosY + mHeight / 2 - mFont.getHeight(mText) / 2, mText, mEnabled ? org.newdawn.slick.Color.black : org.newdawn.slick.Color.gray);
+        mFont.drawString(mPosX + mWidth / 2 - mFont.getWidth(mText) / 2, mPosY + mHeight / 2 - mFont.getHeight(mText) / 2, mText, mEnabled ? mColor : org.newdawn.slick.Color.gray);
 
         glDisable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);

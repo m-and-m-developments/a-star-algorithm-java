@@ -4,8 +4,12 @@ import com.mandm.astar.a_start_solver.AStarSolver;
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.grid.RandomGridProvider;
 import com.mandm.astar.render.Window;
-import com.mandm.astar.ui.widget.*;
+import com.mandm.astar.ui.widget.Button;
+import com.mandm.astar.ui.widget.GridRenderer;
+import com.mandm.astar.ui.widget.View;
+import com.mandm.astar.ui.widget.ViewGroup;
 import org.lwjgl.opengl.Display;
+import org.newdawn.slick.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +56,8 @@ public class GuiScreen {
         solve = new Button(0, 600, "Solve!");
         generateGrid = new Button(solve.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Generate grid");
         loadGrid = new Button(generateGrid.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Load grid");
-        exit = new Button(loadGrid.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Exit");
+        exit = new Button(loadGrid.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Exit", Color.red);
 
-        TextView textView = new TextView(exit.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 609, "This is a textview!");
-
-        solveGroup.addView(textView);
         solveGroup.addView(solve);
         solveGroup.addView(generateGrid);
         solveGroup.addView(loadGrid);

@@ -5,8 +5,9 @@ import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.grid.LoadGridProvider;
 import com.mandm.astar.ui.widget.Button;
 import com.mandm.astar.ui.widget.GridRenderer;
+import com.mandm.astar.ui.widget.TextView;
 import com.mandm.astar.ui.widget.ViewGroup;
-import com.mandm.astar.util.Log;
+import org.newdawn.slick.Color;
 
 import javax.swing.*;
 import java.io.FileWriter;
@@ -24,6 +25,7 @@ public class LoadGridView extends ViewGroup {
     private final Button save;
     private final Button exit;
     private final Button setSize;
+    private final TextView hint;
 
     public LoadGridView(int width, int height, GuiScreen parent) {
         super(0, 0, width, height);
@@ -36,13 +38,15 @@ public class LoadGridView extends ViewGroup {
         load = new Button(apply.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Load grid");
         save = new Button(load.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Save");
         setSize = new Button(save.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Set Size");
-        exit = new Button(setSize.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Exit");
+        exit = new Button(setSize.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Exit", Color.red);
+        hint = new TextView(exit.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, 0, 40, "Wall: LSTRG; Clear: LSHIFT; Start: RSTRG; Target: RSHIFT");
 
         apply.addClickListener(actionPerformer -> {
             if (gridProvider.validateField()) {
                 parent.closeChild(gridProvider);
             } else {
-                Log.i("Please select a start and target field!");
+                hint.setColor(Color.red);
+                hint.setText("Please select a start and target field!");
             }
         });
         load.addClickListener(actionPerformer -> {
@@ -61,7 +65,7 @@ public class LoadGridView extends ViewGroup {
             int retVal = fileChooser.showSaveDialog(null);
 
             if (retVal == JFileChooser.APPROVE_OPTION) {
-                try (FileWriter writer = new FileWriter(fileChooser.getSelectedFile())){
+                try (FileWriter writer = new FileWriter(fileChooser.getSelectedFile())) {
                     writer.write(gridProvider.toString());
                     writer.flush();
                 } catch (IOException e) {
@@ -71,7 +75,7 @@ public class LoadGridView extends ViewGroup {
         });
         exit.addClickListener(actionPerformer -> parent.closeChild(null));
         setSize.addClickListener(actionPerformer -> {
-            String[] options = {"1", "2", "10", "20", "30","60"};
+            String[] options = {"1", "2", "10", "20", "30", "60"};
 
             String userInput = (String) JOptionPane.showInputDialog(null,
                     "Pixel size...",
@@ -97,5 +101,6 @@ public class LoadGridView extends ViewGroup {
         addView(save);
         addView(exit);
         addView(setSize);
+        addView(hint);
     }
 }
