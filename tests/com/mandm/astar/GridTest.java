@@ -1,5 +1,6 @@
 package com.mandm.astar;
 
+import com.mandm.astar.a_start_solver.AStarSolver;
 import com.mandm.astar.grid.EmptyGridProvider;
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.grid.RandomGridProvider;
@@ -55,6 +56,27 @@ public class GridTest {
 
         assertTrue(hasStart[0]);
         assertTrue(hasTarget[0]);
+    }
+
+    @Test(timeout = 1000)
+    public void testAStarSolver() {
+        GridProvider gridProvider = new RandomGridProvider(200, 200);
+
+        AStarSolver.solve(gridProvider);
+    }
+
+    @Test(timeout = 1000)
+    public void testAStarSolver2() {
+        GridProvider gridProvider = new EmptyGridProvider(200, 200, false) {
+            @Override
+            public void generateGrid() {
+                super.generateGrid();
+                startField = mGrid.get(0).get(0);
+                targetField = mGrid.get(199).get(199);
+            }
+        };
+
+        AStarSolver.solve(gridProvider);
     }
 
 }

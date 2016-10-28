@@ -20,6 +20,7 @@ public class EmptyGridProvider extends GridProvider {
         mWidth = width;
         mHeight = height;
         mSelectableFields = selectableFields;
+        generateGrid();
     }
 
     @Override
@@ -37,4 +38,19 @@ public class EmptyGridProvider extends GridProvider {
             }
         }
     }
+
+    @Override
+    public void copyFromProvider(GridProvider gridProvider) {
+        super.copyFromProvider(gridProvider);
+        if (gridProvider instanceof RandomGridProvider) {
+            RandomGridProvider randomGridProvider = (RandomGridProvider) gridProvider;
+            mWidth = randomGridProvider.getWidth();
+            mHeight = randomGridProvider.getHeight();
+        } else if (gridProvider instanceof EmptyGridProvider) {
+            EmptyGridProvider emptyGridProvider = (EmptyGridProvider) gridProvider;
+            mWidth = emptyGridProvider.mWidth;
+            mHeight = emptyGridProvider.mHeight;
+        }
+    }
+
 }

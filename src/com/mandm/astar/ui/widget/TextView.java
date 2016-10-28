@@ -17,7 +17,7 @@ public class TextView extends View {
     protected Font mFont;
     protected Color mColor;
 
-    protected static final int margin = 4;
+    public static final int margin = 4;
 
     public TextView(int posX, int posY, int width, int height, String text) {
         super(posX, posY, width, height);
@@ -38,18 +38,18 @@ public class TextView extends View {
         mFont = FontManager.getFontBig();
         mColor = Color.black;
 
-        calcWidth();
-        calcHeight();
         mPosX = posX;
         mPosY = posY;
         mText = text;
+        calcWidth();
+        calcHeight();
     }
 
-    protected void calcWidth() {
+    public void calcWidth() {
         mWidth = mFont.getWidth(mText) + 2 * margin;
     }
 
-    protected void calcHeight() {
+    public void calcHeight() {
         mHeight = mFont.getHeight(mText) + 2 * margin;
     }
 
@@ -83,5 +83,9 @@ public class TextView extends View {
         mFont.drawString(mPosX + mWidth / 2 - mFont.getWidth(mText) / 2, mPosY + mHeight / 2 - mFont.getHeight(mText) / 2, mText, mColor);
         glDisable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);
+    }
+
+    public Font getFont() {
+        return mFont;
     }
 }

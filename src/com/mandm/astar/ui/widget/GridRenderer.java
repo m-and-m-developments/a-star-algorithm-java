@@ -23,7 +23,7 @@ public class GridRenderer extends View {
     protected void setGrid() {
         mGrid = mGridProvider.getGrid();
 
-        //line and row where we are
+        //line and row where the loop is
         //positions[0] = line
         //positions[1] = row
         final int[] positions = {0, 0};
@@ -50,8 +50,8 @@ public class GridRenderer extends View {
             setGrid();
         }
 
-        for (int i = 0; i < mGrid.size(); i++) {
-            for (int j = 0; j < mGrid.get(i).size(); j++) {
+        for (int i = 0; i < grid.size(); i++) {
+            for (int j = 0; j < grid.get(i).size(); j++) {
                 mGrid.get(i).get(j).setStatus(grid.get(i).get(j).getStatus());
             }
         }

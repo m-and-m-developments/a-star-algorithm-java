@@ -2,6 +2,7 @@ package com.mandm.astar.a_start_solver;
 
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.ui.widget.Field;
+import com.mandm.astar.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public final class AStarSolver {
     public static void solve(final GridProvider GRID_PROVIDER) {
 
         new Thread(() -> {
+            long nanos = System.nanoTime();
             for (List<Field> list : GRID_PROVIDER.getGrid()) {
                 for (Field field : list) {
                     field.setHeuristicCost(Math.sqrt(Math.pow(Math.abs(GRID_PROVIDER.getTargetField().getX_POSITION() - field.getX_POSITION()), 2) + Math.pow(Math.abs(GRID_PROVIDER.getTargetField().getY_POSITION() - field.getY_POSITION()), 2)));
@@ -49,6 +51,8 @@ public final class AStarSolver {
                 current.setStatus(Field.Status.FOUND);
                 current = current.getParent();
             }
+
+            Log.d(String.format("Time: %s ms", (System.nanoTime() - nanos) / 1000000));
         }).start();
     }
 

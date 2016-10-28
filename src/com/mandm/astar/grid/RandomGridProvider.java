@@ -19,6 +19,7 @@ public class RandomGridProvider extends GridProvider {
         super();
         mWidth = width;
         mHeight = height;
+        generateGrid();
     }
 
     @Override
@@ -32,16 +33,18 @@ public class RandomGridProvider extends GridProvider {
 
         for (int i = 0; i < mWidth; i++) {
             for (int j = 0; j < mHeight; j++) {
-                boolean wall = random.nextInt(3) == 0;
+                boolean wall = random.nextInt(2) == 0;
                 mGrid.get(i).add(new Field(wall ? Field.Status.WALL : Field.Status.EMPTY, i, j));
             }
         }
 
-        Field start = mGrid.get(random.nextInt(mGrid.size())).get(random.nextInt(mGrid.get(0).size()));
+//        Field start = mGrid.get(random.nextInt(mGrid.size())).get(random.nextInt(mGrid.get(0).size()));
+        Field start = mGrid.get(0).get(0);
         start.setStatus(Field.Status.START);
         setStartField(start);
 
-        Field target = mGrid.get(random.nextInt(mGrid.size())).get(random.nextInt(mGrid.get(0).size()));
+//        Field target = mGrid.get(random.nextInt(mGrid.size())).get(random.nextInt(mGrid.get(0).size()));
+        Field target = mGrid.get(mWidth - 1).get(mHeight - 1);
         target.setStatus(Field.Status.END);
         setTargetField(target);
     }
@@ -58,5 +61,13 @@ public class RandomGridProvider extends GridProvider {
             mWidth = emptyGridProvider.mWidth;
             mHeight = emptyGridProvider.mHeight;
         }
+    }
+
+    public int getWidth() {
+        return mWidth;
+    }
+
+    public int getHeight() {
+        return mHeight;
     }
 }
