@@ -23,6 +23,9 @@ public class EmptyGridProvider extends GridProvider {
         generateGrid();
     }
 
+    /**
+     * Generates a empty grid
+     */
     @Override
     public void generateGrid() {
         mGrid = new ArrayList<>();
@@ -39,6 +42,12 @@ public class EmptyGridProvider extends GridProvider {
         }
     }
 
+    /**
+     * Copies the grid from the given provider
+     * Also sets the width and height
+     *
+     * @param gridProvider the gridProvider from where the grid is copied
+     */
     @Override
     public void copyFromProvider(GridProvider gridProvider) {
         super.copyFromProvider(gridProvider);

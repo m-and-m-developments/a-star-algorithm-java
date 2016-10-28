@@ -13,7 +13,6 @@ import static org.lwjgl.opengl.GL11.*;
 public class Field extends View implements Comparable {
     protected final int X_POSITION;
     protected final int Y_POSITION;
-    protected boolean mNeedsRender;
 
     protected double mHeuristicCost;
     protected double finalCost;
@@ -52,26 +51,15 @@ public class Field extends View implements Comparable {
 
     @Override
     public void render() {
-        if (mNeedsRender) {
-//            mNeedsRender = false;
-            float margin = mWidth > 2 && mHeight > 2 ? .5f : 0;
-            Color color = getColor();
-            glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
-            glRectf(mPosX + margin, mPosY + margin, mPosX + mWidth - margin, mPosY + mHeight - margin);
-            glEnd();
-        }
+        float margin = mWidth > 2 && mHeight > 2 ? .5f : 0;
+        Color color = getColor();
+        glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
+        glRectf(mPosX + margin, mPosY + margin, mPosX + mWidth - margin, mPosY + mHeight - margin);
+        glEnd();
     }
 
     public double getDistance() {
         return mHeuristicCost;
-    }
-
-    public boolean isNeedsRender() {
-        return mNeedsRender;
-    }
-
-    public void setNeedsRender(boolean mNeedsRender) {
-        this.mNeedsRender = mNeedsRender;
     }
 
     public Status getStatus() {
@@ -81,7 +69,6 @@ public class Field extends View implements Comparable {
     public void setStatus(Status status) {
         if ((mStatus != Status.START && mStatus != Status.END) || status != Status.ACTIVE) {
             mStatus = status;
-            mNeedsRender = true;
         }
     }
 

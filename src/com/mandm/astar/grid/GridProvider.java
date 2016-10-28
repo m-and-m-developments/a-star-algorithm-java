@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created on 18.10.2016.
+ * GridProvider which holds the grid which gets rendered or updated
  *
  * @author Martin
  */
@@ -21,6 +22,10 @@ public abstract class GridProvider {
         return mGrid;
     }
 
+    /**
+     * Generates a grid
+     * Could be random, empty or loading it from the FS
+     */
     public abstract void generateGrid();
 
     public Field getStartField() {
@@ -39,6 +44,11 @@ public abstract class GridProvider {
         this.targetField = targetField;
     }
 
+    /**
+     * Copies the fields from the given GridProvider to this object
+     *
+     * @param gridProvider the gridProvider from where the grid is copied
+     */
     public void copyFromProvider(GridProvider gridProvider) {
         mGrid = gridProvider.getGrid();
         startField = gridProvider.getStartField();

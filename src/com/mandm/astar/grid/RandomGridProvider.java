@@ -12,7 +12,14 @@ import java.util.Random;
  */
 public class RandomGridProvider extends GridProvider {
 
+    /**
+     * Count of fields
+     */
     private int mWidth;
+
+    /**
+     * Count of fields
+     */
     private int mHeight;
 
     public RandomGridProvider(int width, int height) {
@@ -22,6 +29,10 @@ public class RandomGridProvider extends GridProvider {
         generateGrid();
     }
 
+    /**
+     * Generates a random grid with a wall to no-wall ratio of 1:1
+     * A start-field and a target-field are set at the first and last field
+     */
     @Override
     public void generateGrid() {
         mGrid = new ArrayList<>();
@@ -49,6 +60,12 @@ public class RandomGridProvider extends GridProvider {
         setTargetField(target);
     }
 
+    /**
+     * Copies the grid from the given provider
+     * Also sets the width and height
+     *
+     * @param gridProvider the gridProvider from where the grid is copied
+     */
     @Override
     public void copyFromProvider(GridProvider gridProvider) {
         super.copyFromProvider(gridProvider);

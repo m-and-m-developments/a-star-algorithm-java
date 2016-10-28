@@ -17,10 +17,10 @@ public class GridRenderer extends View {
     public GridRenderer(GridProvider gridProvider, int width, int height) {
         super(0, 0, width, height);
         mGridProvider = gridProvider;
-        setGrid();
+        setGridPositions();
     }
 
-    protected void setGrid() {
+    protected void setGridPositions() {
         mGrid = mGridProvider.getGrid();
 
         //line and row where the loop is
@@ -47,7 +47,7 @@ public class GridRenderer extends View {
         List<List<Field>> grid = mGridProvider.getGrid();
 
         if (grid.size() != mGrid.size() || grid.get(0).size() != mGrid.get(0).size()) {
-            setGrid();
+            setGridPositions();
         }
 
         for (int i = 0; i < grid.size(); i++) {
