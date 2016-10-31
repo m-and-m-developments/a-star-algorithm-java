@@ -61,18 +61,6 @@ public class Field extends View implements Comparable {
         }
     }
 
-    public double getDistance() {
-        return mHeuristicCost;
-    }
-
-    public boolean isNeedsRender() {
-        return mNeedsRender;
-    }
-
-    public void setNeedsRender(boolean mNeedsRender) {
-        this.mNeedsRender = mNeedsRender;
-    }
-
     public Status getStatus() {
         return mStatus;
     }
@@ -96,8 +84,8 @@ public class Field extends View implements Comparable {
         return mHeuristicCost;
     }
 
-    public void setHeuristicCost(double mHeuristicCost) {
-        this.mHeuristicCost = mHeuristicCost;
+    public void setHeuristicCost(Field targetField, final double ORTHOGONAL_COST, final double DIAGONAL_COST) {
+        mHeuristicCost = Math.sqrt(Math.pow(Math.abs(targetField.getX_POSITION() - X_POSITION), 2) + Math.pow(Math.abs(targetField.getY_POSITION() - Y_POSITION), 2));
     }
 
     public double getFinalCost() {

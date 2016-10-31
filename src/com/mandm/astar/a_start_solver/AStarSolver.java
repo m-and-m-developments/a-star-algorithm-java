@@ -1,9 +1,9 @@
 package com.mandm.astar.a_start_solver;
 
+import com.mandm.astar.a_start_solver.model.Solver;
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.ui.widget.Field;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -12,22 +12,22 @@ import java.util.PriorityQueue;
  * Created by Moriz Martiner
  * Created on 10/21/2016
  */
-public final class AStarSolver {
+public final class AStarSolver extends Solver {
     private static final double ORTHOGONAL_COST = 1;
     private static final double DIAGONAL_COST = Math.sqrt(2) + ORTHOGONAL_COST;
 
-    public static void solve(final GridProvider GRID_PROVIDER) {
+    public AStarSolver(GridProvider gridProvider) {
+        super(gridProvider);
+        calculateHeuristicCost();
+    }
 
+    public void solve() {
         new Thread(() -> {
-            for (List<Field> list : GRID_PROVIDER.getGrid()) {
-                for (Field field : list) {
-                    field.setHeuristicCost(Math.sqrt(Math.pow(Math.abs(GRID_PROVIDER.getTargetField().getX_POSITION() - field.getX_POSITION()), 2) + Math.pow(Math.abs(GRID_PROVIDER.getTargetField().getY_POSITION() - field.getY_POSITION()), 2)));
-                }
-            }
-
             PriorityQueue<Field> openList = new PriorityQueue<>();
             openList.add(GRID_PROVIDER.getStartField());
             Field current;
+
+            long time = System.nanoTime();
 
             while (true) {
                 current = openList.poll();
@@ -39,11 +39,13 @@ public final class AStarSolver {
                 }
                 current.setStatus(Field.Status.ACTIVE);
 
-                for (Field tmp : getNeighbourFields(GRID_PROVIDER, current)) {
-                    checkAndUpdateCost(openList, current, tmp, current.getY_POSITION() != tmp.getY_POSITION() && current.getX_POSITION() != tmp.getX_POSITION() ? DIAGONAL_COST : ORTHOGONAL_COST);
+                for (Field tmp : getOrthogonalAndDiagonalNeighbours(GRID_PROVIDER, current)) {
+                    solveNode(openList, current, tmp);
                 }
-
             }
+
+            System.out.println(String.valueOf(System.nanoTime() - time));
+
             current = current.getParent();
             while (current.getStatus() != Field.Status.START) {
                 current.setStatus(Field.Status.FOUND);
@@ -52,7 +54,7 @@ public final class AStarSolver {
         }).start();
     }
 
-    private static void checkAndUpdateCost(PriorityQueue<Field> openList, Field current, Field tmp, double cost) {
+    private static void solveNode(PriorityQueue<Field> openList, Field current, Field tmp) {
         if (tmp == null || tmp.getStatus() != Field.Status.EMPTY && tmp.getStatus() != Field.Status.END) {
             return;
         }
@@ -69,59 +71,11 @@ public final class AStarSolver {
         }
     }
 
-    private static List<Field> getNeighbourFields(GridProvider gridProvider, Field field) {
-        List<Field> list = getOrthogonalNeighbours(gridProvider, field);
-        list.addAll(getDiagonalNeighbours(gridProvider, field));
-        return list;
-    }
-
-    private static List<Field> getOrthogonalNeighbours(GridProvider gridProvider, Field field) {
-        List<Field> list = new ArrayList<>();
-
-        // Field on position 2
-        if (field.getY_POSITION() - 1 >= 0) {
-            list.add(gridProvider.getGrid().get(field.getY_POSITION() - 1).get(field.getX_POSITION()));
-        }
-
-
-        if (field.getX_POSITION() - 1 >= 0) {
-            list.add(gridProvider.getGrid().get(field.getY_POSITION()).get(field.getX_POSITION() - 1));
-        }
-
-        if (field.getX_POSITION() + 1 < gridProvider.getGrid().get(field.getY_POSITION()).size()) {
-            list.add(gridProvider.getGrid().get(field.getY_POSITION()).get(field.getX_POSITION() + 1));
-        }
-
-        if (field.getY_POSITION() + 1 < gridProvider.getGrid().size()) {
-            list.add(gridProvider.getGrid().get(field.getY_POSITION() + 1).get(field.getX_POSITION()));
-        }
-
-        return list;
-    }
-
-    private static List<Field> getDiagonalNeighbours(GridProvider gridProvider, Field field) {
-        List<Field> list = new ArrayList<>();
-
-        if (field.getY_POSITION() - 1 >= 0) {
-            if (field.getX_POSITION() - 1 >= 0) {
-                list.add(gridProvider.getGrid().get(field.getY_POSITION() - 1).get(field.getX_POSITION() - 1));
-            }
-
-            if (field.getX_POSITION() + 1 < gridProvider.getGrid().get(field.getY_POSITION()).size()) {
-                list.add(gridProvider.getGrid().get(field.getY_POSITION() - 1).get(field.getX_POSITION() + 1));
+    private void calculateHeuristicCost() {
+        for (List<Field> list : GRID_PROVIDER.getGrid()) {
+            for (Field field : list) {
+                field.setHeuristicCost(GRID_PROVIDER.getTargetField(), ORTHOGONAL_COST, DIAGONAL_COST);
             }
         }
-
-        if (field.getY_POSITION() + 1 < gridProvider.getGrid().size()) {
-            if (field.getX_POSITION() - 1 >= 0) {
-                list.add(gridProvider.getGrid().get(field.getY_POSITION() + 1).get(field.getX_POSITION() - 1));
-            }
-
-            if (field.getX_POSITION() + 1 < gridProvider.getGrid().get(field.getY_POSITION()).size()) {
-                list.add(gridProvider.getGrid().get(field.getY_POSITION() + 1).get(field.getX_POSITION() + 1));
-            }
-        }
-
-        return list;
     }
 }
