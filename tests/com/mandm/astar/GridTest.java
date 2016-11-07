@@ -79,7 +79,7 @@ public class GridTest {
     public void testAStarSolver() {
         GridProvider gridProvider = new RandomGridProvider(200, 200);
 
-        new AStarSolver(gridProvider).solve();
+        new AStarSolver(gridProvider, null).solve();
     }
 
     @Test(timeout = 1000)
@@ -100,7 +100,7 @@ public class GridTest {
             }
         };
 
-        new AStarSolver(gridProvider).solve();
+        new AStarSolver(gridProvider, null).solve();
     }
 
 }
