@@ -6,7 +6,6 @@ import com.mandm.astar.ui.widget.Field;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -26,13 +25,14 @@ public class AStarMultiThread extends Solver {
 
     private long time;
 
+    private boolean targetFound;
+
     public AStarMultiThread(GridProvider gridProvider) {
         super(gridProvider);
         calculateHeuristicCost();
     }
 
     public void solve() {
-        time = System.currentTimeMillis();
 
         openList.add(GRID_PROVIDER.getStartField());
 
@@ -45,7 +45,7 @@ public class AStarMultiThread extends Solver {
         }
     }
 
-    private static void solveNode(PriorityBlockingQueue<Field> openList, Field current, Field tmp) {
+    private void solveNode(Field current, Field tmp) {
         if (tmp == null || tmp.getStatus() != Field.Status.EMPTY && tmp.getStatus() != Field.Status.END) {
             return;
         }
@@ -72,6 +72,8 @@ public class AStarMultiThread extends Solver {
 
     private void targetFound() {
         new Thread(() -> {
+
+            targetFound = true;
             executorService.shutdown();
 
             Field target = GRID_PROVIDER.getTargetField().getParent();
@@ -88,20 +90,20 @@ public class AStarMultiThread extends Solver {
         public void run() {
             Field current;
 
-            while (true) {
+            while (!targetFound) {
                 current = openList.poll();
                 if (current == null) {
                     return;
                 }
                 if (current.getStatus() == Field.Status.END) {
-                    System.out.println(String.valueOf(time - System.currentTimeMillis()));
+                    System.out.println(String.valueOf(System.nanoTime() - time));
                     targetFound();
                     break;
                 }
                 current.setStatus(Field.Status.ACTIVE);
 
                 for (Field tmp : getOrthogonalAndDiagonalNeighbours(GRID_PROVIDER, current)) {
-                    solveNode(openList, current, tmp);
+                    solveNode(current, tmp);
                 }
             }
         }
