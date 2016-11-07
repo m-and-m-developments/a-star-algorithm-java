@@ -60,7 +60,7 @@ public class GuiScreen {
         solveGroup.addView(exit);
 
         solve.addClickListener(view -> {
-            AStarSolver.solve(gridProvider);
+            new AStarSolver(gridProvider).solve();
             solve.setEnabled(false);
         });
         generateGrid.addClickListener(view -> {
