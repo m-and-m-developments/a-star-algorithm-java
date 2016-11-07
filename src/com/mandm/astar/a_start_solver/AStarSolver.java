@@ -1,9 +1,9 @@
 package com.mandm.astar.a_start_solver;
 
 import com.mandm.astar.a_start_solver.model.Solver;
+import com.mandm.astar.a_start_solver.model.SolverListener;
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.ui.widget.Field;
-import com.mandm.astar.util.Log;
 
 import java.util.List;
 import java.util.PriorityQueue;
@@ -17,42 +17,13 @@ public final class AStarSolver extends Solver {
     private static final double ORTHOGONAL_COST = 1;
     private static final double DIAGONAL_COST = Math.sqrt(2) + ORTHOGONAL_COST;
 
-    public AStarSolver(GridProvider gridProvider) {
+    private SolverListener solverListener;
+
+    public AStarSolver(GridProvider gridProvider, SolverListener solverListener) {
         super(gridProvider);
         calculateHeuristicCost();
-    }
 
-    public void solve() {
-        new Thread(() -> {
-            PriorityQueue<Field> openList = new PriorityQueue<>();
-            openList.add(GRID_PROVIDER.getStartField());
-            Field current;
-
-            long time = System.nanoTime();
-
-            while (true) {
-                current = openList.poll();
-                if (current == null) {
-                    return;
-                }
-                if (current.getStatus() == Field.Status.END) {
-                    break;
-                }
-                current.setStatus(Field.Status.ACTIVE);
-
-                for (Field tmp : getOrthogonalAndDiagonalNeighbours(GRID_PROVIDER, current)) {
-                    solveNode(openList, current, tmp);
-                }
-            }
-
-            System.out.println(String.valueOf(System.nanoTime() - time));
-
-            current = current.getParent();
-            while (current.getStatus() != Field.Status.START) {
-                current.setStatus(Field.Status.FOUND);
-                current = current.getParent();
-            }
-        }).start();
+        this.solverListener = solverListener;
     }
 
     private static void solveNode(PriorityQueue<Field> openList, Field current, Field tmp) {
@@ -70,6 +41,53 @@ public final class AStarSolver extends Solver {
             }
             tmp.setStatus(Field.Status.ACTIVE);
         }
+    }
+
+    public void solve() {
+        if (solverListener != null) {
+            solverListener.onStart();
+        }
+
+        new Thread(() -> {
+            PriorityQueue<Field> openList = new PriorityQueue<>();
+            openList.add(GRID_PROVIDER.getStartField());
+            Field current;
+
+            if (solverListener != null) {
+                solverListener.onStartTimer();
+            }
+
+            while (true) {
+                current = openList.poll();
+                if (current == null) {
+                    return;
+                }
+                if (current.getStatus() == Field.Status.END) {
+                    break;
+                }
+                current.setStatus(Field.Status.ACTIVE);
+
+                for (Field tmp : getOrthogonalAndDiagonalNeighbours(GRID_PROVIDER, current)) {
+                    solveNode(openList, current, tmp);
+                }
+            }
+
+            if (solverListener != null) {
+                solverListener.onStopTimer();
+            }
+
+
+            current = current.getParent();
+            while (current.getStatus() != Field.Status.START) {
+                current.setStatus(Field.Status.FOUND);
+                current = current.getParent();
+            }
+
+            if (solverListener != null) {
+                solverListener.onFinished();
+            }
+
+        }).start();
     }
 
     private void calculateHeuristicCost() {
