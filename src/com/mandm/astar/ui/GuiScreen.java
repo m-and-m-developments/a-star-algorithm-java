@@ -1,5 +1,22 @@
+/*
+ * Copyright 2016 Martin Fink & Moriz Martiner
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.mandm.astar.ui;
 
+import com.mandm.astar.a_start_solver.AStarMultiThread;
 import com.mandm.astar.a_start_solver.AStarSolver;
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.grid.RandomGridProvider;
@@ -26,7 +43,8 @@ public class GuiScreen {
 
     public static final int WINDOW_WIDTH = 1200;
     public static final int WINDOW_HEIGHT = 640;
-    private final Button solve;
+    private final Button solveSingleThreaded;
+    private final Button solveMultiThreaded;
     private final Button generateGrid;
     private final Button loadGrid;
     private final Button exit;
@@ -49,23 +67,32 @@ public class GuiScreen {
         solveGroup.addView(renderer);
 
 
-        solve = new Button(0, 600, "Solve!");
-        generateGrid = new Button(solve.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Generate grid");
+        solveSingleThreaded = new Button(0, 600, "Solve!");
+        solveMultiThreaded = new Button(solveSingleThreaded.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Solve Multithr.");
+        generateGrid = new Button(solveMultiThreaded.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Generate grid");
         loadGrid = new Button(generateGrid.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Load grid");
         exit = new Button(loadGrid.getPosX() + Button.BUTTON_DEFAULT_WIDTH, 600, "Exit", Color.red);
 
-        solveGroup.addView(solve);
+        solveGroup.addView(solveSingleThreaded);
+        solveGroup.addView(solveMultiThreaded);
         solveGroup.addView(generateGrid);
         solveGroup.addView(loadGrid);
         solveGroup.addView(exit);
 
-        solve.addClickListener(view -> {
+        solveSingleThreaded.addClickListener(view -> {
             new AStarSolver(gridProvider, null).solve();
-            solve.setEnabled(false);
+            solveMultiThreaded.setEnabled(false);
+            solveSingleThreaded.setEnabled(false);
+        });
+        solveMultiThreaded.addClickListener(view -> {
+            new AStarMultiThread(gridProvider).solve();
+            solveMultiThreaded.setEnabled(false);
+            solveSingleThreaded.setEnabled(false);
         });
         generateGrid.addClickListener(view -> {
             gridProvider.generateGrid();
-            solve.setEnabled(true);
+            solveSingleThreaded.setEnabled(true);
+            solveMultiThreaded.setEnabled(true);
         });
         loadGrid.addClickListener(view -> {
             child = new LoadGridView(WINDOW_WIDTH, WINDOW_HEIGHT, this);
@@ -123,7 +150,8 @@ public class GuiScreen {
         child = null;
         if (gridProvider != null) {
             this.gridProvider.copyFromProvider(gridProvider);
-            solve.setEnabled(true);
+            solveSingleThreaded.setEnabled(true);
+            solveMultiThreaded.setEnabled(true);
         }
     }
 }
