@@ -1,12 +1,24 @@
-package com.mandm.astar.render;
+/*
+ * Copyright 2016 Martin Fink & Moriz Martiner
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.mandm.astar.ui.widget;
 
 import com.mandm.astar.grid.GridProvider;
-import com.mandm.astar.ui.widget.Field;
-import com.mandm.astar.ui.widget.View;
 
 import java.util.List;
-
-import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created on 18.10.2016.
@@ -21,13 +33,13 @@ public class GridRenderer extends View {
     public GridRenderer(GridProvider gridProvider, int width, int height) {
         super(0, 0, width, height);
         mGridProvider = gridProvider;
-        setGrid();
+        setGridPositions();
     }
 
-    protected void setGrid() {
+    protected void setGridPositions() {
         mGrid = mGridProvider.getGrid();
 
-        //line and row where we are
+        //line and row where the loop is
         //positions[0] = line
         //positions[1] = row
         final int[] positions = {0, 0};
@@ -51,11 +63,11 @@ public class GridRenderer extends View {
         List<List<Field>> grid = mGridProvider.getGrid();
 
         if (grid.size() != mGrid.size() || grid.get(0).size() != mGrid.get(0).size()) {
-            setGrid();
+            setGridPositions();
         }
 
-        for (int i = 0; i < mGrid.size(); i++) {
-            for (int j = 0; j < mGrid.get(i).size(); j++) {
+        for (int i = 0; i < grid.size(); i++) {
+            for (int j = 0; j < grid.get(i).size(); j++) {
                 mGrid.get(i).get(j).setStatus(grid.get(i).get(j).getStatus());
             }
         }
@@ -65,23 +77,6 @@ public class GridRenderer extends View {
 
     @Override
     public void render() {
-        glBegin(GL_LINE);
-        glColor3f(1, 0, 0);
-
-        glLineWidth(2);
-        for (int i = 0; i < mGrid.size(); i++) {
-            int x = i * (mWidth / mGrid.size());
-            glVertex2f(x, 0);
-            glVertex2f(x, mHeight);
-        }
-
-        for (int i = 0; i < mGrid.get(0).size(); i++) {
-            int y = i * (mHeight / mGrid.get(0).size());
-            glVertex2f(0, y);
-            glVertex2f(mWidth, y);
-        }
-        glEnd();
-
         mGrid.forEach(row -> row.forEach(Field::render));
     }
 }

@@ -1,10 +1,25 @@
+/*
+ * Copyright 2016 Martin Fink & Moriz Martiner
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.mandm.astar.ui.widget;
 
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.util.Color;
 
-import static org.lwjgl.opengl.GL11.glColor3f;
-import static org.lwjgl.opengl.GL11.glRecti;
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created on 18.10.2016.
@@ -14,7 +29,6 @@ import static org.lwjgl.opengl.GL11.glRecti;
 public class Field extends View implements Comparable {
     protected final int X_POSITION;
     protected final int Y_POSITION;
-    protected boolean mNeedsRender;
 
     protected double mHeuristicCost;
     protected double finalCost;
@@ -53,12 +67,11 @@ public class Field extends View implements Comparable {
 
     @Override
     public void render() {
-        if (mNeedsRender) {
-//            mNeedsRender = false;
-            Color color = getColor();
-            glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
-            glRecti(mPosX, mPosY, mPosX + mWidth, mPosY + mHeight);
-        }
+        float margin = mWidth > 2 && mHeight > 2 ? .5f : 0;
+        Color color = getColor();
+        glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
+        glRectf(mPosX + margin, mPosY + margin, mPosX + mWidth - margin, mPosY + mHeight - margin);
+        glEnd();
     }
 
     public Status getStatus() {
@@ -68,7 +81,6 @@ public class Field extends View implements Comparable {
     public void setStatus(Status status) {
         if ((mStatus != Status.START && mStatus != Status.END) || status != Status.ACTIVE) {
             mStatus = status;
-            mNeedsRender = true;
         }
     }
 
