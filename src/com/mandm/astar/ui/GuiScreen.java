@@ -22,7 +22,7 @@ import static org.lwjgl.opengl.GL11.*;
  * @author Martin
  */
 @SuppressWarnings("WeakerAccess")
-public class GuiScreen {
+public class GuiScreen implements SolverListener{
 
     public static final int WINDOW_WIDTH = 1200;
     public static final int WINDOW_HEIGHT = 640;
@@ -60,7 +60,7 @@ public class GuiScreen {
         solveGroup.addView(exit);
 
         solve.addClickListener(view -> {
-            new AStarSolver(gridProvider, null).solve();
+            new AStarSolver(gridProvider, this).solve();
             solve.setEnabled(false);
         });
         generateGrid.addClickListener(view -> {
