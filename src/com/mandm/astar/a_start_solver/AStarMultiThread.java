@@ -1,8 +1,11 @@
 package com.mandm.astar.a_start_solver;
 
 import com.mandm.astar.a_start_solver.model.Solver;
+import com.mandm.astar.a_start_solver.model.SolverListener;
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.ui.widget.Field;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,29 +22,39 @@ public class AStarMultiThread extends Solver {
     private static final double ORTHOGONAL_COST = 1;
     private static final double DIAGONAL_COST = Math.sqrt(2) + ORTHOGONAL_COST;
 
+    private static final int NUMBER_OF_THREADS = 8;
+
+    private ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
     private PriorityBlockingQueue<Field> openList = new PriorityBlockingQueue<>();
-
-    private ExecutorService executorService = Executors.newFixedThreadPool(8);
-
-    private long time;
-
+    private SolverListener solverListener;
     private boolean targetFound;
 
-    public AStarMultiThread(GridProvider gridProvider) {
+    public AStarMultiThread(@NotNull GridProvider gridProvider, @Nullable SolverListener solverListener) {
         super(gridProvider);
         calculateHeuristicCost();
+        this.solverListener = solverListener;
     }
 
     public void solve() {
+        if (solverListener != null) {
+            solverListener.onStart();
+        }
 
         openList.add(GRID_PROVIDER.getStartField());
 
-        Solver[] solvers = new Solver[8];
+        Solver[] solvers = new Solver[NUMBER_OF_THREADS];
 
         Arrays.setAll(solvers, n -> new Solver());
 
+
+        if (solverListener != null) {
+            solverListener.onStartTimer();
+        }
         for (Solver solver : solvers) {
             executorService.execute(solver);
+        }
+        if (solverListener != null) {
+            solverListener.onStopTimer();
         }
     }
 
@@ -81,6 +94,10 @@ public class AStarMultiThread extends Solver {
                 target.setStatus(Field.Status.FOUND);
                 target = target.getParent();
             }
+
+            if (solverListener != null) {
+                solverListener.onFinished();
+            }
         }).start();
     }
 
@@ -96,7 +113,6 @@ public class AStarMultiThread extends Solver {
                     return;
                 }
                 if (current.getStatus() == Field.Status.END) {
-                    System.out.println(String.valueOf(System.nanoTime() - time));
                     targetFound();
                     break;
                 }

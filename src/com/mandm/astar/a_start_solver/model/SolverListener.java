@@ -9,20 +9,16 @@ public interface SolverListener {
     default void onStart() {
     }
 
-    ;
-
     default void onStartTimer() {
     }
-
-    ;
 
     default void onStopTimer() {
     }
 
-    ;
+    default void onFinishedUnsuccessful() {
+
+    }
 
     default void onFinished() {
     }
-
-    ;
 }

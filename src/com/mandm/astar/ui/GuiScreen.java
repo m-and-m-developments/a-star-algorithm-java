@@ -1,6 +1,7 @@
 package com.mandm.astar.ui;
 
 import com.mandm.astar.a_start_solver.AStarSolver;
+import com.mandm.astar.a_start_solver.model.SolverListener;
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.grid.RandomGridProvider;
 import com.mandm.astar.render.GLHelper;
@@ -123,5 +124,30 @@ public class GuiScreen {
             this.gridProvider.copyFromProvider(gridProvider);
             solve.setEnabled(true);
         }
+    }
+
+    @Override
+    public void onStart() {
+        System.out.println("Start");
+    }
+
+    @Override
+    public void onStartTimer() {
+        System.out.println("Start timer");
+    }
+
+    @Override
+    public void onStopTimer() {
+        System.out.println("Stop timer");
+    }
+
+    @Override
+    public void onFinishedUnsuccessful() {
+        System.out.println("Finished unsuccessful");
+    }
+
+    @Override
+    public void onFinished() {
+        System.out.println("Finished");
     }
 }

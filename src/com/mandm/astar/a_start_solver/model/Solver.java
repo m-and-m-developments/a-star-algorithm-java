@@ -2,6 +2,7 @@ package com.mandm.astar.a_start_solver.model;
 
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.ui.widget.Field;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public abstract class Solver {
     protected final GridProvider GRID_PROVIDER;
 
-    public Solver(GridProvider gridProvider) {
+    public Solver(@NotNull GridProvider gridProvider) {
         if (gridProvider.getStartField() == null) {
             throw new NullPointerException("Start field cannot be empty");
         }
