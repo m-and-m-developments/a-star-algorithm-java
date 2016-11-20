@@ -32,6 +32,10 @@ public interface SolverListener {
     default void onStopTimer() {
     }
 
+    default void onFinishedUnsuccessful() {
+
+    }
+
     default void onFinished() {
     }
 }

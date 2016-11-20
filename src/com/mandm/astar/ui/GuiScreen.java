@@ -18,6 +18,7 @@ package com.mandm.astar.ui;
 
 import com.mandm.astar.a_start_solver.AStarMultiThread;
 import com.mandm.astar.a_start_solver.AStarSolver;
+import com.mandm.astar.a_start_solver.model.SolverListener;
 import com.mandm.astar.grid.GridProvider;
 import com.mandm.astar.grid.RandomGridProvider;
 import com.mandm.astar.render.Window;
@@ -39,7 +40,7 @@ import static org.lwjgl.opengl.GL11.*;
  * @author Martin
  */
 @SuppressWarnings("WeakerAccess")
-public class GuiScreen {
+public class GuiScreen implements SolverListener{
 
     public static final int WINDOW_WIDTH = 1200;
     public static final int WINDOW_HEIGHT = 640;
@@ -80,14 +81,13 @@ public class GuiScreen {
         solveGroup.addView(exit);
 
         solveSingleThreaded.addClickListener(view -> {
-            new AStarSolver(gridProvider, null).solve();
+            new AStarSolver(gridProvider, this).solve();
             solveMultiThreaded.setEnabled(false);
             solveSingleThreaded.setEnabled(false);
         });
         solveMultiThreaded.addClickListener(view -> {
-            new AStarMultiThread(gridProvider).solve();
+            new AStarMultiThread(gridProvider, null).solve();
             solveMultiThreaded.setEnabled(false);
-            solveSingleThreaded.setEnabled(false);
         });
         generateGrid.addClickListener(view -> {
             gridProvider.generateGrid();
@@ -153,5 +153,30 @@ public class GuiScreen {
             solveSingleThreaded.setEnabled(true);
             solveMultiThreaded.setEnabled(true);
         }
+    }
+
+    @Override
+    public void onStart() {
+        System.out.println("Start");
+    }
+
+    @Override
+    public void onStartTimer() {
+        System.out.println("Start timer");
+    }
+
+    @Override
+    public void onStopTimer() {
+        System.out.println("Stop timer");
+    }
+
+    @Override
+    public void onFinishedUnsuccessful() {
+        System.out.println("Finished unsuccessful");
+    }
+
+    @Override
+    public void onFinished() {
+        System.out.println("Finished");
     }
 }

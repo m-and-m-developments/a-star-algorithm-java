@@ -35,6 +35,8 @@ public final class AStarSolver extends Solver {
 
     private SolverListener solverListener;
 
+    private boolean unableToSolve;
+
     public AStarSolver(GridProvider gridProvider, SolverListener solverListener) {
         super(gridProvider);
         calculateHeuristicCost();
@@ -76,7 +78,12 @@ public final class AStarSolver extends Solver {
             while (true) {
                 current = openList.poll();
                 if (current == null) {
-                    return;
+                    if (solverListener != null) {
+                        solverListener.onStopTimer();
+                        solverListener.onFinishedUnsuccessful();
+                    }
+                    unableToSolve = true;
+                    break;
                 }
                 if (current.getStatus() == Field.Status.END) {
                     break;
@@ -92,6 +99,9 @@ public final class AStarSolver extends Solver {
                 solverListener.onStopTimer();
             }
 
+            if (current == null || current.getParent() == null || unableToSolve) {
+                return;
+            }
 
             current = current.getParent();
             while (current.getStatus() != Field.Status.START) {
